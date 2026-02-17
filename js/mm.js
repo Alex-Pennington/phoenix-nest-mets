@@ -89,7 +89,7 @@ App.sendLogToMM = async function(logId, btn) {
   try {
     await fetch(hookUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      mode: 'no-cors',
       body: JSON.stringify({ text: mmText })
     });
     log.sent = true;
