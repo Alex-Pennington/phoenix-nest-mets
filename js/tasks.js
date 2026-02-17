@@ -617,7 +617,7 @@ const TASKS = {
       {
         text: 'What the kiosk is:',
         substeps: [
-          'Ratatoskr is the tablet/computer running the Phoenix Nest payroll app.',
+          'The kiosk is the clock-in/clock-out and hours attribution webpage served by Ratatoskr (our server on Digital Ocean).',
           'The kiosk page shows a grid of employee photos. You tap your photo to clock in or out.',
           'It connects to Odoo (our business system) to record your attendance and timesheets.',
           'Your hours, task attribution, and attendance all flow from this single system.'
