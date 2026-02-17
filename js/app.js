@@ -717,7 +717,7 @@ const App = {
           if (results[i] === 'NO-GO') nogoItems.push(`- ❌ ${item}`);
         });
       }
-      let mmText = `${resultEmoji} **${resultText} -- ${taskId}: ${task.title}**${safetyTag}\n\n| Contractor | Evaluator | Date |\n|:--|:--|:--|\n| ${contractor.name} | ${evaluator || 'N/A'} | ${evalDate} |`;
+      let mmText = resultEmoji + ' **' + resultText + ' -- ' + taskId + ': ' + task.title + '**' + safetyTag + '\n\n| Contractor | Evaluator | Date |\n|:--|:--|:--|\n| ' + contractor.name + ' | ' + (evaluator || 'N/A') + ' | ' + evalDate + ' |';
       if (nogoItems.length > 0) {
         mmText += `\n\n**NO-GO Items:**\n${nogoItems.join('\n')}`;
       }
