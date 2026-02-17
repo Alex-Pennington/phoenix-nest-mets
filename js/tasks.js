@@ -1,5 +1,5 @@
 // Phoenix Nest Training & Evaluation Guide - Task Data
-// All 29 MET-format task cards
+// 38 MET-format task cards across 4 tiers
 
 const TIERS = [
   {
@@ -16,7 +16,7 @@ const TIERS = [
       {
         name: 'Digital Tools',
         icon: '📱',
-        tasks: ['PN-004', 'PN-005', 'PN-006']
+        tasks: ['PN-004', 'PN-005', 'PN-006', 'PN-009']
       },
       {
         name: 'Site Orientation',
@@ -595,6 +595,108 @@ const TASKS = {
     ],
     safetyCritical: true,
     references: 'Phoenix Nest Emergency Response Procedures'
+  },
+
+  'PN-009': {
+    id: 'PN-009',
+    tier: 'onboarding',
+    title: 'Kiosk Clock-In/Out & Hours Attribution',
+    conditions: [
+      'Contractor has been added as an employee in Odoo with a photo.',
+      'Ratatoskr kiosk is powered on and accessible on the local network.',
+      'Contractor is on-site at the start or end of a work session.',
+      'Odoo projects and tasks have been configured for the contractor\'s role.'
+    ],
+    standards: [
+      'Contractor can clock in and out using the kiosk without assistance.',
+      'Contractor correctly allocates all worked hours to the appropriate tasks at clock-out.',
+      'Contractor understands that unallocated hours are lost hours -- the system requires task attribution.',
+      'Contractor can identify which project and tasks apply to their work.'
+    ],
+    perfSteps: [
+      {
+        text: 'What the kiosk is:',
+        substeps: [
+          'Ratatoskr is the tablet/computer running the Phoenix Nest payroll app.',
+          'The kiosk page shows a grid of employee photos. You tap your photo to clock in or out.',
+          'It connects to Odoo (our business system) to record your attendance and timesheets.',
+          'Your hours, task attribution, and attendance all flow from this single system.'
+        ]
+      },
+      {
+        text: 'Clocking IN:',
+        substeps: [
+          'Walk up to the kiosk when you arrive on site.',
+          'Find and tap your photo on the employee grid.',
+          'The screen will show "Welcome [Your Name]" with the current time.',
+          'You are now clocked in. Go to work.',
+          'Clock in WHEN YOU ARRIVE. Do not wait until you start production.'
+        ]
+      },
+      {
+        text: 'Clocking OUT:',
+        substeps: [
+          'At the end of your shift, go to the kiosk and tap your photo again.',
+          'The screen will show how long you were clocked in and present the Task Allocation form.',
+          'THIS IS THE CRITICAL STEP: You MUST allocate your hours to tasks before you can clock out.',
+          'The form shows available tasks from your assigned projects.',
+          'Enter the hours you spent on each task. The total must account for your full shift.',
+          'Example: If you worked 8 hours -- 6 hours splitting, 1 hour stacking, 1 hour cleanup -- enter those numbers next to each task.',
+          'Tap "Submit & Clock Out" when your hours are allocated.',
+          'The screen will show "Goodbye [Your Name]" confirming you are clocked out.'
+        ]
+      },
+      {
+        text: 'Projects and tasks you may see:',
+        substeps: [
+          'Your available projects depend on your role. Common ones include:',
+          'Production -- Splitting, stacking, palletizing, log processing.',
+          'Bunkhouse Operations -- Lawn mowing, cleaning, maintenance, repairs (if applicable).',
+          'Marketing & Sales -- Customer calls, delivery, social media (if applicable).',
+          'Administrative -- Meetings, training, inventory counts, equipment maintenance.',
+          'If you do not see the right task for your work, tell Alex. Do NOT leave hours unallocated.'
+        ]
+      },
+      {
+        text: 'Why hours attribution matters:',
+        substeps: [
+          'Commission pay (per cord) is tracked separately from hourly tasks.',
+          'Admin hours, bunkhouse hours, and other non-production work are paid based on what the kiosk records.',
+          'If you do not allocate hours to tasks, the system cannot calculate what you are owed.',
+          'Unallocated hours look like you were here but did nothing. That is not what we want.',
+          'Hours data also helps us understand how long tasks actually take for future planning.'
+        ]
+      },
+      {
+        text: 'Common mistakes to avoid:',
+        substeps: [
+          'Forgetting to clock in -- you arrive, start working, and realize 2 hours later you never clocked in. Tell Alex so it can be corrected.',
+          'Forgetting to clock out -- you leave without clocking out. Your attendance stays open. Tell Alex next day.',
+          'Putting all hours on one task -- if you did 3 different things, split the hours accurately.',
+          'Leaving hours unallocated -- the form is designed to prevent this, but if something goes wrong, report it.',
+          'Clocking in/out for someone else -- never do this. Each person clocks themselves in and out.'
+        ]
+      },
+      { text: 'If the kiosk is down or unresponsive, text Alex with your clock-in or clock-out time. It will be entered manually.' }
+    ],
+    goNoGo: [
+      'Can locate the kiosk and identify their own photo on the employee grid',
+      'Successfully clocks in by tapping their photo',
+      'Successfully clocks out and completes the task allocation form',
+      'Correctly splits hours across multiple tasks (not dumping all hours on one task)',
+      'Can name at least 2 projects and 3 tasks relevant to their role',
+      'Can explain why hours must be allocated to tasks (pay calculation, accountability)',
+      'Knows what to do if kiosk is down (text Alex with times)',
+      'Knows what to do if they forget to clock in or out (report to Alex for manual correction)'
+    ],
+    notes: [
+      'Walk through one full clock-in and clock-out cycle with the contractor on their first day.',
+      'Verify their photo is loaded in Odoo before this evaluation.',
+      'If projects/tasks are not yet configured for their role, set that up first.',
+      'Commission-based production pay is separate from the kiosk hours system. Make sure the contractor understands both.'
+    ],
+    safetyCritical: false,
+    references: 'Greybeard Payroll App - Kiosk Module Documentation'
   },
 
   'PN-101': {
