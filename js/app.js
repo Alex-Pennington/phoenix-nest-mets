@@ -760,12 +760,18 @@ const App = {
         data: {
           taskId: taskId,
           taskTitle: task.title,
+          taskTier: task.tier || null,
+          contractorId: contractorId,
           contractorName: contractor.name,
+          contractorTier: contractor.currentTier,
           result: resultText,
           evaluator: evaluator,
           date: evalDate,
           notes: evalNotes,
-          safetyCritical: task.safetyCritical,
+          safetyCritical: task.safetyCritical || false,
+          criteria: task.goNoGo.map(function(item, i) {
+            return { index: i, text: item, result: results[i] || 'NOT-EVALUATED' };
+          }),
           nogoItems: nogoItems,
           details: results
         }

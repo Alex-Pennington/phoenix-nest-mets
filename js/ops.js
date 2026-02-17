@@ -266,16 +266,22 @@ App.collectFormData = function() {
   var data = {};
   document.querySelectorAll('.cl-input, .cl-textarea, .cl-select').forEach(function(el) {
     var fid = el.dataset.fid;
-    if (fid) data[fid] = el.value;
+    if (fid) data[fid] = el.value || '';
   });
   document.querySelectorAll('.cl-checkbox').forEach(function(el) {
     var fid = el.dataset.fid;
-    if (fid) data[fid] = el.checked ? 'yes' : '';
+    if (fid) data[fid] = el.checked ? 'yes' : 'no';
+  });
+  var ynFields = {};
+  document.querySelectorAll('.cl-yn-btn').forEach(function(el) {
+    var fid = el.dataset.fid;
+    if (fid && !ynFields[fid]) ynFields[fid] = '';
   });
   document.querySelectorAll('.cl-yn-btn.selected').forEach(function(el) {
     var fid = el.dataset.fid;
-    if (fid) data[fid] = el.dataset.val;
+    if (fid) ynFields[fid] = el.dataset.val;
   });
+  for (var k in ynFields) { data[k] = ynFields[k] || 'not-answered'; }
   return data;
 };
 
