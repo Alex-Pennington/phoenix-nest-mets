@@ -692,15 +692,49 @@ const App = {
 
       const allGo = Object.values(results).every(v => v === 'GO');
 
+      const evalDate = document.getElementById('eval-date').value;
+      const evalNotes = document.getElementById('eval-notes').value;
+
       await db.saveEvaluation({
         contractorId,
         taskId,
         result: allGo ? 'GO' : 'NO-GO',
         evaluator,
-        date: document.getElementById('eval-date').value,
-        notes: document.getElementById('eval-notes').value,
+        date: evalDate,
+        notes: evalNotes,
         details: results
       });
+
+      // Notify Mattermost
+      const contractor = await db.getContractor(contractorId);
+      const task = TASKS[taskId];
+      const resultEmoji = allGo ? '✅' : '❌';
+      const resultText = allGo ? 'GO' : 'NO-GO';
+      const safetyTag = task.safetyCritical ? ' 🛡️ SAFETY-CRITICAL' : '';
+      const nogoItems = [];
+      if (!allGo) {
+        task.goNoGo.forEach((item, i) => {
+          if (results[i] === 'NO-GO') nogoItems.push(`- ❌ ${item}`);
+        });
+      }
+      let mmText = `${resultEmoji} **${resultText} — ${taskId}: ${task.title}**${safetyTag}\n`;
+      mmText += `| Contractor | Evaluator | Date |\n|:--|:--|:--|\n| ${contractor.name} | ${evaluator || 'N/A'} | ${evalDate} |`;
+      if (nogoItems.length > 0) {
+        mmText += `\n\n**NO-GO Items:**\n${nogoItems.join('\n')}`;
+      }
+      if (evalNotes) {
+        mmText += `\n\n> ${evalNotes}`;
+      }
+
+      try {
+        await fetch('https://chat.firewood.ltd/hooks/ybhthptcy786icsz3h3ddbmieh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: mmText })
+        });
+      } catch (e) {
+        console.warn('Mattermost notification failed:', e);
+      }
 
       // Show confirmation
       const saveBtn = document.getElementById('btn-save-eval');
