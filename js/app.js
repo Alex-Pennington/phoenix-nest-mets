@@ -717,13 +717,17 @@ const App = {
           if (results[i] === 'NO-GO') nogoItems.push(`- ❌ ${item}`);
         });
       }
-      let mmText = resultEmoji + ' **' + resultText + ' -- ' + taskId + ': ' + task.title + '**' + safetyTag + '\n\n| Contractor | Evaluator | Date |\n|:--|:--|:--|\n| ' + contractor.name + ' | ' + (evaluator || 'N/A') + ' | ' + evalDate + ' |';
+      var parts = [];
+      parts.push(resultEmoji + ' **' + resultText + ' -- ' + taskId + ': ' + task.title + '**' + safetyTag);
+      parts.push('**Contractor:** ' + contractor.name + '  **Evaluator:** ' + (evaluator || 'N/A') + '  **Date:** ' + evalDate);
       if (nogoItems.length > 0) {
-        mmText += `\n\n**NO-GO Items:**\n${nogoItems.join('\n')}`;
+        parts.push('**NO-GO Items:**');
+        nogoItems.forEach(function(item) { parts.push(item); });
       }
       if (evalNotes) {
-        mmText += `\n\n> ${evalNotes}`;
+        parts.push('> ' + evalNotes);
       }
+      var mmText = parts.join('\n');
 
       let mmStatus = '';
       try {
