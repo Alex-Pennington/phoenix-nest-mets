@@ -319,7 +319,7 @@ App.postChecklistToMM = async function(type, data) {
   }
   var mmText = parts.join('\n');
   try {
-    await fetch('https://chat.firewood.ltd/hooks/ybhthptcy786icsz3h3ddbmieh', {
+    await fetch('https://chat.firewood.ltd/hooks/55wsqxj3iff8z8tmtazp1x9jne', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: mmText })
