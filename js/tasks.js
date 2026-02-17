@@ -3,6 +3,29 @@
 
 const TIERS = [
   {
+    id: 'onboarding',
+    label: 'Onboarding',
+    title: 'New Hire Orientation',
+    color: '#9C27B0',
+    sections: [
+      {
+        name: 'Company & Culture',
+        icon: '🔥',
+        tasks: ['PN-001', 'PN-002', 'PN-003']
+      },
+      {
+        name: 'Digital Tools',
+        icon: '📱',
+        tasks: ['PN-004', 'PN-005', 'PN-006']
+      },
+      {
+        name: 'Site Orientation',
+        icon: '📍',
+        tasks: ['PN-007', 'PN-008']
+      }
+    ]
+  },
+  {
     id: 'tier1to2',
     label: 'Tier 1 → 2',
     title: 'Trainee → Operator',
@@ -79,6 +102,501 @@ const TIERS = [
 ];
 
 const TASKS = {
+  'PN-001': {
+    id: 'PN-001',
+    tier: 'onboarding',
+    title: 'Company Overview & Expectations',
+    conditions: [
+      'New contractor is on-site for their first day or orientation session.',
+      'Crew lead or owner is available to walk through company information.',
+      'Contractor has received their independent contractor agreement.'
+    ],
+    standards: [
+      'Contractor can explain what Phoenix Nest does, who the customers are, and what makes the product different.',
+      'Contractor understands the independent contractor relationship, pay structure, and advancement tiers.',
+      'Contractor knows how to contact the office and key personnel.'
+    ],
+    perfSteps: [
+      { text: 'Phoenix Nest LLC is a firewood delivery and excavation business based in Flatwoods/Greenup, KY, serving a 60-mile radius around Ashland.' },
+      { text: 'Our product: Premium seasoned hardwood (Oak, Hickory, Cherry) with verified moisture content below 20%. This is what sets us apart -- we test and guarantee quality.' },
+      { text: 'Business address: 1217 Unity Circle, Flatwoods KY 41139. Production site: 1301 Pleasant Valley Rd, Greenup, KY.' },
+      {
+        text: 'Key contacts:',
+        substeps: [
+          'Alex Pennington (Owner) -- Cell: 606-923-7664',
+          'Business phone: 606-644-9876',
+          'Email: alex@firewood.ltd',
+          'Website: firewood.ltd'
+        ]
+      },
+      {
+        text: 'Contractor tiers and advancement:',
+        substeps: [
+          'Tier 1 (Trainee): Learning basics -- splitting, stacking, safety.',
+          'Tier 2 (Operator): Can run splitter independently, meets production standards.',
+          'Tier 3 (Skilled Operator): Chainsaw qualified, tractor qualified, can run full production alone.',
+          'Tier 4 (Lead): Can lead crew, handle maintenance, make operational decisions.'
+        ]
+      },
+      { text: 'Pay is per-cord based on your tier. Higher tiers earn more per cord. Production is tracked daily.' },
+      { text: 'You are an independent contractor (1099). You are responsible for your own taxes. Phoenix Nest provides equipment and PPE (except boots and gloves).' },
+      { text: 'Work schedule is typically discussed weekly. Communicate early if you cannot make a scheduled day.' }
+    ],
+    goNoGo: [
+      'Can state what Phoenix Nest produces and what makes it different (seasoned, moisture-tested hardwood)',
+      'Knows production site address and how to get there',
+      'Knows how to reach Alex by phone and email',
+      'Can explain the tier system and which tier they are starting at',
+      'Understands pay is per-cord and tracked daily',
+      'Understands independent contractor status (1099, own taxes)',
+      'Has signed contractor agreement'
+    ],
+    notes: [
+      'This is a one-time orientation task. Can be evaluated through conversation.',
+      'Give the contractor time to ask questions. First impressions matter.'
+    ],
+    safetyCritical: false,
+    references: 'Phoenix Nest LLC Contractor Onboarding'
+  },
+
+  'PN-002': {
+    id: 'PN-002',
+    tier: 'onboarding',
+    title: 'Quality Standards & Product Knowledge',
+    conditions: [
+      'Contractor is on-site during orientation or first week.',
+      'Seasoned and unseasoned wood samples are available for demonstration.',
+      'Moisture meter is available for hands-on practice.'
+    ],
+    standards: [
+      'Contractor can identify acceptable vs unacceptable firewood by sight and moisture reading.',
+      'Contractor understands the species we sell and their characteristics.',
+      'Contractor can explain why moisture content matters to the customer.'
+    ],
+    perfSteps: [
+      {
+        text: 'Species we process and sell:',
+        substeps: [
+          'Oak (Red & White) -- Dense, long burn, our most common. Heavy to handle.',
+          'Hickory -- Hottest burn, great for cooking. Very dense and heavy.',
+          'Cherry -- Pleasant aroma, medium density. Popular for fire pits and smoking.',
+          'Mixed hardwood -- Combination loads. Never include softwood (pine, cedar, poplar).'
+        ]
+      },
+      { text: 'Moisture content target: BELOW 20%. We verify with a moisture meter. This is our quality guarantee to customers.' },
+      {
+        text: 'How to use the moisture meter:',
+        substeps: [
+          'Split a fresh face on the piece (do not test bark side or weathered surface).',
+          'Press pins firmly into the fresh-split face, parallel to the grain.',
+          'Take readings from at least 3 pieces per pallet or load.',
+          'Record readings. If any piece is above 20%, the batch needs more seasoning.'
+        ]
+      },
+      {
+        text: 'What makes wood unacceptable (reject from finished pallets):',
+        substeps: [
+          'Moisture above 20% on fresh split face.',
+          'Rot or punk -- soft, crumbly, discolored interior.',
+          'Excessive bug damage or boring.',
+          'Oversized pieces (will not fit standard firebox ~16-18 inches).',
+          'Undersized pieces (slivers, chips, bark chunks).',
+          'Softwood species mixed into hardwood pallets.'
+        ]
+      },
+      { text: 'Seasoning takes 6-12 months depending on species, split size, airflow, and weather. Properly stacked and covered wood seasons faster.' },
+      { text: 'Our reputation depends on consistent quality. Every pallet that leaves here represents Phoenix Nest.' }
+    ],
+    goNoGo: [
+      'Can identify Oak, Hickory, and Cherry by sight (bark and grain)',
+      'Can correctly operate moisture meter on a fresh-split face',
+      'States correct moisture target (below 20%)',
+      'Can identify at least 3 reject conditions (rot, oversize, softwood, etc.)',
+      'Can explain why moisture content matters to the customer (burn quality, smoke, creosote)',
+      'Understands seasoning timeline and factors'
+    ],
+    notes: [
+      'Use actual wood samples for this evaluation. Book knowledge is not enough.',
+      'Most new contractors will not know species identification -- teach it hands-on.'
+    ],
+    safetyCritical: false,
+    references: 'Phoenix Nest LLC Quality Standards'
+  },
+
+  'PN-003': {
+    id: 'PN-003',
+    tier: 'onboarding',
+    title: 'Conduct, Communication & Professionalism',
+    conditions: [
+      'Contractor has completed PN-001 (Company Overview).',
+      'This can be evaluated through conversation and observation over the first week.'
+    ],
+    standards: [
+      'Contractor communicates reliably about schedule, issues, and questions.',
+      'Contractor treats equipment, site, coworkers, and customers with respect.',
+      'Contractor understands how problems and conflicts are handled.'
+    ],
+    perfSteps: [
+      {
+        text: 'Communication expectations:',
+        substeps: [
+          'If you are going to be late or absent, text or call Alex BEFORE your shift start time. Not after.',
+          'If you do not understand something, ask. There are no stupid questions during training.',
+          'If something breaks or seems wrong with equipment, report it immediately. Do not try to hide it.',
+          'If you have a conflict with another crew member, bring it to Alex. Do not let it fester.'
+        ]
+      },
+      {
+        text: 'Site conduct:',
+        substeps: [
+          'No alcohol or drugs on site. Zero tolerance. Impairment = immediate removal.',
+          'No horseplay around equipment. This is a production environment with serious hazards.',
+          'Clean up after yourself -- break area, work area, restroom.',
+          'Personal phones: Keep on you for safety/communication but limit recreational use during production.'
+        ]
+      },
+      {
+        text: 'Customer interaction (if you encounter a customer on-site or during delivery):',
+        substeps: [
+          'Be polite and professional. You represent Phoenix Nest.',
+          'If they have a question you cannot answer, take their name/number and tell them Alex will call.',
+          'Never promise delivery dates, prices, or quantities -- that is office business.'
+        ]
+      },
+      { text: 'Phoenix Nest conflict approach: We deal with problems directly and professionally. If something is not working, we talk about it. If you have ideas to improve operations, we want to hear them.' }
+    ],
+    goNoGo: [
+      'Demonstrates reliable communication about schedule (notifies before shift if late/absent)',
+      'Understands zero-tolerance substance policy',
+      'Knows to report equipment issues immediately rather than hiding them',
+      'Can describe how to handle a customer interaction on site',
+      'Asks questions when unsure rather than guessing',
+      'Understands the conflict resolution process (bring it to Alex)'
+    ],
+    notes: [
+      'This is partially an observation task. Evaluate over the first week, not just a single conversation.',
+      'Pay attention to reliability patterns early. They tend to continue.'
+    ],
+    safetyCritical: false,
+    references: 'Phoenix Nest LLC Contractor Conduct Policy'
+  },
+
+  'PN-004': {
+    id: 'PN-004',
+    tier: 'onboarding',
+    title: 'Mattermost Setup & Usage',
+    conditions: [
+      'Contractor has a smartphone with internet access.',
+      'Mattermost server is accessible at chat.firewood.ltd.',
+      'Contractor account has been created by admin.'
+    ],
+    standards: [
+      'Contractor can log into Mattermost on their phone and access all required channels.',
+      'Contractor understands the purpose of each channel and what gets posted where.',
+      'Contractor can receive and respond to messages.'
+    ],
+    perfSteps: [
+      {
+        text: 'Install Mattermost app:',
+        substeps: [
+          'Download "Mattermost" from App Store (iPhone) or Google Play (Android).',
+          'Open app and enter server URL: chat.firewood.ltd',
+          'Log in with credentials provided by Alex.',
+          'Enable notifications when prompted -- this is how you receive urgent updates.'
+        ]
+      },
+      {
+        text: 'Required channels and their purpose:',
+        substeps: [
+          '#town-square -- General announcements. Check daily.',
+          '#ops-daily -- Daily operations logs and weekly checklists are posted here automatically from the METS app. This is the operational record.',
+          '#training-mets -- MET evaluation results are posted here automatically. Your GO/NO-GO results will appear in this channel.',
+          'Direct Messages -- Use for private communication with Alex or crew members.'
+        ]
+      },
+      {
+        text: 'Communication guidelines on Mattermost:',
+        substeps: [
+          'Check messages at start and end of each shift at minimum.',
+          'Respond to direct messages within a reasonable time.',
+          'Use channels for their intended purpose -- do not post personal chat in #ops-daily.',
+          'If you see an automated log or evaluation post, you do not need to respond to it. Those are records.'
+        ]
+      },
+      { text: 'Mattermost is the official communication platform for Phoenix Nest operations. Important schedule changes, weather calls, and operational updates are posted here.' }
+    ],
+    goNoGo: [
+      'Mattermost app installed and logged in on personal device',
+      'Can navigate to #town-square, #ops-daily, and #training-mets',
+      'Notifications enabled for the app',
+      'Can send a direct message to Alex',
+      'Can explain what each channel is for',
+      'Knows to check messages at start and end of each shift'
+    ],
+    notes: [
+      'Create contractor account in Mattermost before their first day if possible.',
+      'Walk through the app with them in person. Do not just send them instructions.'
+    ],
+    safetyCritical: false,
+    references: 'Phoenix Nest LLC Digital Tools Setup'
+  },
+
+  'PN-005': {
+    id: 'PN-005',
+    tier: 'onboarding',
+    title: 'METS Training App Setup & Navigation',
+    conditions: [
+      'Contractor has a smartphone with internet access.',
+      'METS PWA is deployed and accessible.',
+      'Contractor has been added to the Team list in the app.'
+    ],
+    standards: [
+      'Contractor can install and navigate the METS app on their phone.',
+      'Contractor understands what the app is for and how evaluations work.',
+      'Contractor can access their own progress and review task cards.'
+    ],
+    perfSteps: [
+      {
+        text: 'Install the METS app:',
+        substeps: [
+          'Open browser on phone and go to: alex-pennington.github.io/phoenix-nest-mets/',
+          'When the install banner appears, tap to install. Or use browser menu > Add to Home Screen.',
+          'The app works offline once installed. No internet needed to read task cards or review progress.'
+        ]
+      },
+      {
+        text: 'App sections:',
+        substeps: [
+          'Home -- Quick access to all features.',
+          'Guide -- All training task cards organized by tier. Read these to know what you will be evaluated on.',
+          'Ops -- Daily operations log and weekly checklist. Your crew lead fills these out.',
+          'Team -- Contractor profiles and progress tracking. You can see your own evaluations here.',
+          'Logs -- History of all submitted forms. Send button pushes data to Mattermost.'
+        ]
+      },
+      {
+        text: 'How evaluations work:',
+        substeps: [
+          'Your evaluator (usually Alex or crew lead) opens a task card and selects your name.',
+          'Each criterion is marked GO or NO-GO based on observed performance.',
+          'All criteria must be GO for an overall GO result.',
+          'Results save to the app and post to #training-mets in Mattermost.',
+          'Once you GO all tasks in your current tier, you advance to the next tier (and pay rate).'
+        ]
+      },
+      { text: 'You can browse any task card at any time to study what is expected. Use the Guide tab to review before an evaluation.' },
+      { text: 'The app updates automatically. When you see a blue "Update available" banner, tap it to get the latest version.' }
+    ],
+    goNoGo: [
+      'METS app installed on home screen of personal device',
+      'Can navigate to all 5 tabs (Home, Guide, Ops, Team, Logs)',
+      'Can find and open a task card in the Guide',
+      'Can locate their own profile in the Team section',
+      'Can explain how GO/NO-GO evaluations determine tier advancement',
+      'Understands the app works offline'
+    ],
+    notes: [
+      'Make sure the contractor is added to the Team list before this evaluation.',
+      'Let them explore the app on their own for a few minutes before evaluating.'
+    ],
+    safetyCritical: false,
+    references: 'Phoenix Nest METS App User Guide'
+  },
+
+  'PN-006': {
+    id: 'PN-006',
+    tier: 'onboarding',
+    title: 'Daily Log & Weekly Checklist Procedures',
+    conditions: [
+      'Contractor has completed PN-005 (METS App Setup).',
+      'Contractor is on-site during a normal production day.',
+      'Crew lead can demonstrate the daily log process.'
+    ],
+    standards: [
+      'Contractor understands the daily log workflow (start-of-shift and end-of-shift).',
+      'Contractor can fill out the daily log independently if crew lead is unavailable.',
+      'Contractor knows what data gets captured and why it matters.'
+    ],
+    perfSteps: [
+      {
+        text: 'Daily log workflow:',
+        substeps: [
+          'START OF SHIFT: Open METS app > Ops > Daily Log. Fill in date, crew lead, crew member.',
+          'Complete Safety & Equipment Ready checks -- physically inspect each item.',
+          'Complete PPE checks for each crew member.',
+          'Verify work area, log inventory, and set daily production goal.',
+          'Tap "Save Progress" -- this saves locally in case you lose signal.',
+          'END OF SHIFT: Open the same log (it will show "Resume today\'s log").',
+          'Switch to End of Shift tab. Enter production numbers, quality checks, equipment hours.',
+          'Complete safety/incident section honestly. Near misses are important data, not punishment.',
+          'Fill in tomorrow prep section.',
+          'Tap "Submit Complete" to finalize and send to Mattermost.'
+        ]
+      },
+      {
+        text: 'Why this data matters:',
+        substeps: [
+          'Production numbers track cord output for pay calculation.',
+          'Equipment hours trigger maintenance schedules.',
+          'Safety data identifies patterns before someone gets hurt.',
+          'The data exports to Mattermost as machine-readable JSON for compliance and business analytics.'
+        ]
+      },
+      {
+        text: 'Weekly checklist:',
+        substeps: [
+          'Completed every Friday or Saturday by the crew lead.',
+          'Covers deep equipment maintenance, production review, inventory, safety, quality (moisture testing), and planning.',
+          'Same process: fill out in Ops tab, submit when complete.'
+        ]
+      },
+      { text: 'If the send fails (no signal), the log saves locally. Go to the Logs tab later and hit the Send button when you have signal.' }
+    ],
+    goNoGo: [
+      'Can open a new daily log and fill in the start-of-shift section',
+      'Can resume an in-progress daily log',
+      'Can complete the end-of-shift section with production data',
+      'Knows to Save Progress during shift and Submit Complete at end',
+      'Can explain why production numbers and equipment hours are tracked',
+      'Knows how to resend from the Logs tab if offline when submitting',
+      'Understands near-miss reporting is for safety improvement, not punishment'
+    ],
+    notes: [
+      'Walk through one complete daily log together on their first day.',
+      'The crew lead typically fills out the log, but every crew member should know how.'
+    ],
+    safetyCritical: false,
+    references: 'Phoenix Nest Daily Operations Log Procedures'
+  },
+
+  'PN-007': {
+    id: 'PN-007',
+    tier: 'onboarding',
+    title: 'Production Site Layout & Zones',
+    conditions: [
+      'Contractor is physically on-site at 1301 Pleasant Valley Rd, Greenup, KY.',
+      'Crew lead or owner walks the site with the contractor.',
+      'All major areas are accessible for the walkthrough.'
+    ],
+    standards: [
+      'Contractor can identify and navigate to all work zones on the production site.',
+      'Contractor knows designated areas for parking, staging, production, seasoning, and waste.',
+      'Contractor knows emergency assembly point and first aid locations.'
+    ],
+    perfSteps: [
+      {
+        text: 'Site zones (walk each one):',
+        substeps: [
+          'Parking area -- Where personal vehicles go. Never park in the production zone or delivery path.',
+          'Log staging area -- Where raw logs are stored before processing. Equipment operates here.',
+          'Splitting zone -- Where the hydraulic splitter operates. Primary production area.',
+          'Stacking/palletizing area -- Where split wood is stacked onto pallets.',
+          'Seasoning yard -- Where pallets are stored for drying. Organized by species and date.',
+          'Loading zone -- Where delivery trucks are loaded. Vehicle traffic area.',
+          'Waste/burn pile area -- Where bark, offcuts, and reject wood go.',
+          'Equipment storage -- Where saws, tools, and equipment are stored end of day.'
+        ]
+      },
+      {
+        text: 'Emergency locations:',
+        substeps: [
+          'First aid kit location (verify and remember -- this changes if kit moves with crew).',
+          'Fire extinguisher location.',
+          'Emergency assembly point -- where to meet if evacuating.',
+          'Cell coverage: Know where on site you can/cannot get signal for 911.'
+        ]
+      },
+      { text: 'Traffic flow: Understand how delivery trucks enter and exit. Stay clear of the truck path during loading.' },
+      { text: 'Nearest hospital: Know the route. In an emergency, do not wait for an ambulance if you can safely drive.' }
+    ],
+    goNoGo: [
+      'Can point to and name all major site zones without prompting',
+      'Knows where to park personal vehicle',
+      'Can locate first aid kit and fire extinguisher',
+      'Knows the emergency assembly point',
+      'Understands delivery truck traffic flow and when to stay clear',
+      'Knows where cell coverage works on site for emergency calls'
+    ],
+    notes: [
+      'Do this evaluation as a physical walk-through, not a conversation at a desk.',
+      'Update this task if site layout changes significantly.'
+    ],
+    safetyCritical: true,
+    references: 'Phoenix Nest Production Site Safety Plan'
+  },
+
+  'PN-008': {
+    id: 'PN-008',
+    tier: 'onboarding',
+    title: 'Emergency Procedures & First Response',
+    conditions: [
+      'Contractor has completed PN-007 (Site Layout).',
+      'First aid kit, fire extinguisher, and emergency contact list are accessible.',
+      'This evaluation can be done through scenario-based questioning.'
+    ],
+    standards: [
+      'Contractor knows what to do in common emergency scenarios before help arrives.',
+      'Contractor can locate and access emergency equipment.',
+      'Contractor understands reporting requirements after any incident.'
+    ],
+    perfSteps: [
+      {
+        text: 'Injury response:',
+        substeps: [
+          'STOP all equipment immediately. Shut down splitter, kill chainsaw.',
+          'Assess the situation. Do not move an injured person unless they are in immediate danger.',
+          'Apply direct pressure to bleeding wounds. Use first aid kit supplies.',
+          'Call 911 if injury is serious (deep cuts, broken bones, head injury, loss of consciousness).',
+          'Call Alex immediately after calling 911.',
+          'If the injured person can safely be transported and 911 is not needed, drive them to the nearest ER.'
+        ]
+      },
+      {
+        text: 'Equipment fire / hydraulic failure:',
+        substeps: [
+          'MOVE AWAY from the equipment immediately.',
+          'Do not attempt to fight a hydraulic fluid fire with a standard extinguisher unless it is very small and contained.',
+          'Call 911 for any fire that is not immediately controllable.',
+          'Account for all personnel -- make sure no one is near the equipment.'
+        ]
+      },
+      {
+        text: 'Severe weather:',
+        substeps: [
+          'If lightning is visible or thunder is audible, stop all work and seek shelter immediately.',
+          'Do not shelter under isolated trees or near metal equipment.',
+          'Monitor weather alerts on phone. Alex will typically call weather days in advance.',
+          'If a storm hits suddenly, get to a vehicle.'
+        ]
+      },
+      {
+        text: 'After any incident:',
+        substeps: [
+          'Report to Alex, even if it seems minor.',
+          'Fill out the safety section of the daily log with full details.',
+          'Near misses get reported too. A near miss today is an injury tomorrow.',
+          'No one gets in trouble for reporting. You get in trouble for NOT reporting.'
+        ]
+      }
+    ],
+    goNoGo: [
+      'Can describe step-by-step response to a bleeding injury (stop equipment, pressure, 911, call Alex)',
+      'Can locate first aid kit and demonstrate opening it',
+      'Knows when to call 911 vs drive to ER',
+      'Can describe response to equipment fire (move away, 911, account for personnel)',
+      'Knows lightning/severe weather protocol (stop work, seek shelter)',
+      'Understands all incidents and near misses must be reported',
+      'Knows reporting is for safety, not punishment'
+    ],
+    notes: [
+      'Use "what would you do if..." scenarios for evaluation.',
+      'This is safety-critical. A NO-GO means the contractor needs more training before working independently.',
+      'Review this annually or after any incident.'
+    ],
+    safetyCritical: true,
+    references: 'Phoenix Nest Emergency Response Procedures'
+  },
+
   'PN-101': {
     id: 'PN-101',
     tier: 'tier1to2',
