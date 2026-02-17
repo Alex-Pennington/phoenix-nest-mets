@@ -1,0 +1,302 @@
+{
+  "schema": "phoenix-nest-mets",
+  "version": "1.0.0",
+  "url": "https://alex-pennington.github.io/phoenix-nest-mets/schema.json",
+  "organization": "Phoenix Nest LLC",
+  "description": "Schema for all forms in the Phoenix Nest METS (Training, Evaluation & Operations) PWA",
+  "forms": {
+    "evaluation": {
+      "name": "MET Evaluation",
+      "description": "Minimum Essential Task evaluation for contractor skill verification. GO/NO-GO assessment of specific task criteria.",
+      "channel": "#training-mets",
+      "fields": {
+        "taskId": { "type": "string", "description": "Task identifier (e.g. PN-101)" },
+        "taskTitle": { "type": "string", "description": "Full task name" },
+        "taskTier": { "type": "string", "description": "Tier level the task belongs to" },
+        "contractorId": { "type": "integer", "description": "Internal contractor ID" },
+        "contractorName": { "type": "string", "description": "Contractor full name" },
+        "contractorTier": { "type": "integer", "description": "Contractor current tier level (1-3)" },
+        "result": { "type": "string", "enum": ["GO", "NO-GO"], "description": "Overall evaluation result" },
+        "evaluator": { "type": "string", "description": "Name of person conducting evaluation" },
+        "date": { "type": "date", "description": "Date of evaluation (YYYY-MM-DD)" },
+        "notes": { "type": "string", "description": "Evaluator free-text notes" },
+        "safetyCritical": { "type": "boolean", "description": "Whether this task is safety-critical (zero tolerance)" },
+        "criteria": {
+          "type": "array",
+          "description": "Each GO/NO-GO criterion evaluated",
+          "items": {
+            "index": { "type": "integer", "description": "Criterion position (0-based)" },
+            "text": { "type": "string", "description": "Full text of the criterion being evaluated" },
+            "result": { "type": "string", "enum": ["GO", "NO-GO", "NOT-EVALUATED"], "description": "Individual criterion result" }
+          }
+        },
+        "nogoItems": { "type": "array", "items": "string", "description": "Formatted list of failed criteria" }
+      }
+    },
+    "daily": {
+      "name": "Daily Operations Log",
+      "description": "Start-of-shift and end-of-shift operational checklist for firewood production. Two phases: 'start' (pre-production safety/equipment/PPE) and 'end' (production results, quality, equipment hours, safety incidents, tomorrow prep).",
+      "channel": "#ops-daily",
+      "location": "1301 Pleasant Valley Rd, Greenup, KY",
+      "phases": {
+        "start": "Complete before production begins",
+        "end": "Complete before leaving"
+      },
+      "sections": {
+        "header": {
+          "phase": "start",
+          "title": "Shift Info",
+          "fields": {
+            "header_date": { "type": "date", "description": "Shift date" },
+            "header_crew_lead": { "type": "string", "description": "Crew lead name" },
+            "header_crew_member": { "type": "string", "description": "Crew member name" }
+          }
+        },
+        "equipment": {
+          "phase": "start",
+          "title": "Safety & Equipment Ready",
+          "fields": {
+            "equipment_chainsaw_ready": { "type": "yes/no", "description": "Chainsaws -- Chain tension, bar oil, fuel" },
+            "equipment_chainsaw_ready_notes": { "type": "string", "description": "Chainsaw issues" },
+            "equipment_splitter_ready": { "type": "yes/no", "description": "Splitter -- Fluid levels, wedge, guards" },
+            "equipment_splitter_ready_notes": { "type": "string", "description": "Splitter issues" },
+            "equipment_excavator_ready": { "type": "yes/no", "description": "Excavator -- Walk-around complete" },
+            "equipment_excavator_ready_hrs": { "type": "string", "description": "Excavator start hours" },
+            "equipment_excavator_ready_notes": { "type": "string", "description": "Excavator issues" },
+            "equipment_tractor_ready": { "type": "yes/no", "description": "Tractor -- Walk-around complete" },
+            "equipment_tractor_ready_hrs": { "type": "string", "description": "Tractor start hours" },
+            "equipment_tractor_ready_notes": { "type": "string", "description": "Tractor issues" }
+          }
+        },
+        "ppe": {
+          "phase": "start",
+          "title": "PPE Check",
+          "fields": {
+            "ppe_ppe_lead_chaps": { "type": "yes/no", "description": "Crew Lead -- Chaps" },
+            "ppe_ppe_lead_gloves": { "type": "yes/no", "description": "Crew Lead -- Gloves" },
+            "ppe_ppe_lead_eye": { "type": "yes/no", "description": "Crew Lead -- Eye protection" },
+            "ppe_ppe_lead_ear": { "type": "yes/no", "description": "Crew Lead -- Ear protection" },
+            "ppe_ppe_member_chaps": { "type": "yes/no", "description": "Crew Member -- Chaps" },
+            "ppe_ppe_member_gloves": { "type": "yes/no", "description": "Crew Member -- Gloves" },
+            "ppe_ppe_member_eye": { "type": "yes/no", "description": "Crew Member -- Eye protection" },
+            "ppe_ppe_member_ear": { "type": "yes/no", "description": "Crew Member -- Ear protection" },
+            "ppe_first_aid_verified": { "type": "yes/no", "description": "First Aid Kit location verified" },
+            "ppe_first_aid_location": { "type": "string", "description": "First Aid Kit location" }
+          }
+        },
+        "work_area": {
+          "phase": "start",
+          "title": "Work Area Ready",
+          "fields": {
+            "work_area_pre_clean": { "type": "yes/no", "description": "Pre-production cleaning done" },
+            "work_area_pre_clean_notes": { "type": "string", "description": "Why not cleaned" },
+            "work_area_log_inventory": { "type": "yes/no", "description": "Log inventory adequate for today" },
+            "work_area_log_inventory_notes": { "type": "string", "description": "What is needed" },
+            "work_area_daily_goal": { "type": "string", "description": "Today goal (cords)" },
+            "work_area_species_focus": { "type": "string", "description": "Species focus for today" }
+          }
+        },
+        "production": {
+          "phase": "end",
+          "title": "Production Results",
+          "fields": {
+            "production_cords_split": { "type": "number", "description": "Cords split today" },
+            "production_pallets_completed": { "type": "number", "description": "Pallets completed" },
+            "production_species_oak_hick": { "type": "number", "description": "Oak/Hickory Mix count" },
+            "production_species_cherry": { "type": "number", "description": "Cherry count" },
+            "production_species_hickory": { "type": "number", "description": "Hickory count" },
+            "production_species_other": { "type": "number", "description": "Other species count" },
+            "production_goal_met": { "type": "yes/no", "description": "Did we hit goal?" },
+            "production_goal_met_notes": { "type": "string", "description": "Why goal was missed" }
+          }
+        },
+        "quality": {
+          "phase": "end",
+          "title": "Quality Check",
+          "fields": {
+            "quality_consistent_size": { "type": "yes/no", "description": "Splits are consistent size" },
+            "quality_no_rot": { "type": "yes/no", "description": "No rot or punky wood in finished pallets" },
+            "quality_stacked_properly": { "type": "yes/no", "description": "Stacked properly for seasoning" }
+          }
+        },
+        "equip_end": {
+          "phase": "end",
+          "title": "Equipment End-of-Day",
+          "fields": {
+            "equip_end_excavator_end_hrs": { "type": "string", "description": "Excavator end hours" },
+            "equip_end_excavator_end_hrs_notes": { "type": "string", "description": "Excavator issues" },
+            "equip_end_tractor_end_hrs": { "type": "string", "description": "Tractor end hours" },
+            "equip_end_tractor_end_hrs_notes": { "type": "string", "description": "Tractor issues" },
+            "equip_end_splitter_end_hrs": { "type": "string", "description": "Splitter hours run" },
+            "equip_end_splitter_end_hrs_notes": { "type": "string", "description": "Splitter issues" },
+            "equip_end_maintenance_done": { "type": "string", "description": "Maintenance performed today" },
+            "equip_end_equip_issues": { "type": "string", "description": "Equipment issues for shop" }
+          }
+        },
+        "cleanup": {
+          "phase": "end",
+          "title": "Post-Production Cleaning",
+          "fields": {
+            "cleanup_area_cleaned": { "type": "yes/no", "description": "Work area cleaned" },
+            "cleanup_area_cleaned_notes": { "type": "string", "description": "Why not cleaned" }
+          }
+        },
+        "safety_end": {
+          "phase": "end",
+          "title": "Safety & Incidents",
+          "fields": {
+            "safety_end_near_misses": { "type": "yes/no", "description": "Any near misses today (yes = incident occurred)" },
+            "safety_end_near_misses_notes": { "type": "string", "description": "Near miss description" },
+            "safety_end_injuries": { "type": "yes/no", "description": "Any injuries today (yes = injury occurred)" },
+            "safety_end_injuries_notes": { "type": "string", "description": "Injury description" }
+          }
+        },
+        "tomorrow": {
+          "phase": "end",
+          "title": "Tomorrow Prep",
+          "fields": {
+            "tomorrow_logs_staged": { "type": "yes/no", "description": "Logs staged for morning" },
+            "tomorrow_weather_concern": { "type": "yes/no", "description": "Weather concern (yes = concern exists)" },
+            "tomorrow_weather_concern_notes": { "type": "string", "description": "Weather concern details" },
+            "tomorrow_notes_tomorrow": { "type": "string", "description": "Notes for tomorrow/office" }
+          }
+        }
+      }
+    },
+    "weekly": {
+      "name": "Weekly Checklist",
+      "description": "End-of-week comprehensive review covering equipment deep maintenance, production numbers, inventory, safety/training, quality control with moisture content testing, and weekly summary with action items.",
+      "channel": "#ops-daily",
+      "schedule": "Every Friday or Saturday",
+      "sections": {
+        "week_info": {
+          "title": "Week Info",
+          "fields": {
+            "week_info_week_start": { "type": "date", "description": "Week start date" },
+            "week_info_week_end": { "type": "date", "description": "Week end date" },
+            "week_info_completed_by": { "type": "string", "description": "Completed by (name)" }
+          }
+        },
+        "chainsaws": {
+          "title": "Chainsaws -- Complete Service",
+          "fields": {
+            "chainsaws_spark_plug": { "type": "yes/no", "description": "Spark plug check/replace" },
+            "chainsaws_air_filter": { "type": "yes/no", "description": "Air filter clean/replace" },
+            "chainsaws_fuel_filter": { "type": "yes/no", "description": "Fuel filter check" },
+            "chainsaws_bar_chain_cond": { "type": "yes/no", "description": "Bar and chain condition" },
+            "chainsaws_chains_sharpened": { "type": "number", "description": "Chains sharpened this week" },
+            "chainsaws_chains_replaced": { "type": "number", "description": "Chains replaced" }
+          }
+        },
+        "splitter_maint": {
+          "title": "Hydraulic Splitter -- Full Inspection",
+          "fields": {
+            "splitter_maint_rams_inspected": { "type": "yes/no", "description": "Hydraulic rams inspected (no leaks)" },
+            "splitter_maint_valves_tested": { "type": "yes/no", "description": "Valves tested and cleaned" },
+            "splitter_maint_filters_checked": { "type": "yes/no", "description": "Filters checked/replaced" },
+            "splitter_maint_fluid_topped": { "type": "yes/no", "description": "Hydraulic fluid level topped off" },
+            "splitter_maint_wedge_cond": { "type": "string", "enum": ["Good", "Recondition Requested"], "description": "Wedge condition" },
+            "splitter_maint_fluid_added": { "type": "number", "description": "Fluid added (quarts)" },
+            "splitter_maint_splitter_issues": { "type": "string", "description": "Issues" }
+          }
+        },
+        "heavy_equip": {
+          "title": "Excavator/Tractor Service",
+          "fields": {
+            "heavy_equip_grease_points": { "type": "yes/no", "description": "All grease points lubricated" },
+            "heavy_equip_oil_checked": { "type": "yes/no", "description": "Oil level checked/changed" },
+            "heavy_equip_oil_due": { "type": "string", "description": "Oil change due date" },
+            "heavy_equip_filter_changes": { "type": "yes/no", "description": "Filter changes (if scheduled)" },
+            "heavy_equip_track_tire_cond": { "type": "string", "enum": ["Good", "Needs Attention"], "description": "Track/tire condition" },
+            "heavy_equip_hydraulic_check": { "type": "yes/no", "description": "Hydraulic system check" },
+            "heavy_equip_hours_this_week": { "type": "number", "description": "Hours this week" },
+            "heavy_equip_total_hours": { "type": "number", "description": "Total hours" },
+            "heavy_equip_next_service": { "type": "string", "description": "Next service due" },
+            "heavy_equip_heavy_issues": { "type": "string", "description": "Issues/repairs needed" }
+          }
+        },
+        "backup": {
+          "title": "Backup Equipment Test",
+          "fields": {
+            "backup_backup_saw": { "type": "yes/no", "description": "Backup chainsaw started and tested" },
+            "backup_backup_splitter": { "type": "yes/no", "description": "Backup splitter functionality check" },
+            "backup_backup_ready": { "type": "yes/no", "description": "All backup equipment ready for use" },
+            "backup_equip_notes": { "type": "string", "description": "Notes" }
+          }
+        },
+        "production_review": {
+          "title": "Weekly Production Review",
+          "fields": {
+            "production_review_total_pallets": { "type": "number", "description": "Total pallets produced" },
+            "production_review_total_cords": { "type": "number", "description": "Total cords" },
+            "production_review_days_worked": { "type": "number", "description": "Days worked" },
+            "production_review_avg_per_day": { "type": "number", "description": "Average cords/day" },
+            "production_review_goal_status": { "type": "string", "enum": ["Yes - Exceeded", "Yes - On target", "No - Below"], "description": "Goal met?" },
+            "production_review_crew_size": { "type": "string", "enum": ["2-person all week", "3-person all week", "Mixed"], "description": "Crew worked" },
+            "production_review_prod_notes": { "type": "string", "description": "Notes/Issues affecting production" }
+          }
+        },
+        "inventory": {
+          "title": "Inventory & Planning",
+          "fields": {
+            "inventory_raw_supply": { "type": "string", "enum": ["2+ weeks", "1-2 weeks", "Less than 1 week", "CRITICAL"], "description": "Current raw log supply" },
+            "inventory_order_status": { "type": "string", "enum": ["Order placed", "Need to order", "Delivery scheduled"], "description": "Order status" },
+            "inventory_delivery_date": { "type": "string", "description": "Delivery scheduled date" },
+            "inventory_pallets_ready": { "type": "number", "description": "Pallets ready for delivery" },
+            "inventory_seasoning_cords": { "type": "number", "description": "Cords seasoning in progress" },
+            "inventory_inv_oak": { "type": "number", "description": "Oak (finished)" },
+            "inventory_inv_hickory": { "type": "number", "description": "Hickory (finished)" },
+            "inventory_inv_cherry": { "type": "number", "description": "Cherry (finished)" },
+            "inventory_inv_other": { "type": "number", "description": "Other (finished)" },
+            "inventory_next_delivery": { "type": "string", "description": "Next week delivery schedule" },
+            "inventory_next_target": { "type": "number", "description": "Next week production target (cords)" },
+            "inventory_next_crew": { "type": "string", "enum": ["2-person", "3-person"], "description": "Crew size planned" }
+          }
+        },
+        "safety_weekly": {
+          "title": "Safety & Training",
+          "fields": {
+            "safety_weekly_no_incidents": { "type": "yes/no", "description": "No incidents this week" },
+            "safety_weekly_near_miss_count": { "type": "number", "description": "Near misses reported" },
+            "safety_weekly_injury_count": { "type": "number", "description": "Injuries" },
+            "safety_weekly_safety_topic": { "type": "string", "description": "Safety topic covered" },
+            "safety_weekly_cross_training": { "type": "string", "description": "Cross-training completed" },
+            "safety_weekly_ppe_good": { "type": "yes/no", "description": "All PPE in good condition" },
+            "safety_weekly_ppe_replacements": { "type": "string", "description": "Replacements needed" },
+            "safety_weekly_first_aid_restocked": { "type": "yes/no", "description": "First aid kit restocked" },
+            "safety_weekly_contacts_posted": { "type": "yes/no", "description": "Emergency contacts posted and current" },
+            "safety_weekly_extinguisher_checked": { "type": "yes/no", "description": "Fire extinguisher checked (monthly)" }
+          }
+        },
+        "quality_weekly": {
+          "title": "Quality Control",
+          "fields": {
+            "quality_weekly_mc_sample1": { "type": "number", "description": "Moisture Sample 1 (%)" },
+            "quality_weekly_mc_sample2": { "type": "number", "description": "Moisture Sample 2 (%)" },
+            "quality_weekly_mc_sample3": { "type": "number", "description": "Moisture Sample 3 (%)" },
+            "quality_weekly_mc_avg": { "type": "number", "description": "Average moisture content (%)" },
+            "quality_weekly_mc_status": { "type": "string", "enum": ["Acceptable", "Needs More Seasoning"], "description": "Moisture status" },
+            "quality_weekly_ambient_rh": { "type": "string", "description": "Ambient relative humidity" },
+            "quality_weekly_ambient_temp": { "type": "string", "description": "Ambient temperature" },
+            "quality_weekly_no_complaints": { "type": "yes/no", "description": "No quality complaints this week" },
+            "quality_weekly_customer_feedback": { "type": "string", "description": "Customer feedback received" },
+            "quality_weekly_seasoning_organized": { "type": "yes/no", "description": "Seasoning area organized and properly stacked" },
+            "quality_weekly_rotation_followed": { "type": "yes/no", "description": "Rotation system followed" },
+            "quality_weekly_weather_protected": { "type": "yes/no", "description": "Covered/protected from weather" }
+          }
+        },
+        "summary": {
+          "title": "Weekly Summary",
+          "fields": {
+            "summary_wins": { "type": "string", "description": "Wins this week" },
+            "summary_challenges": { "type": "string", "description": "Challenges/Issues" },
+            "summary_action_1": { "type": "string", "description": "Action item 1" },
+            "summary_action_2": { "type": "string", "description": "Action item 2" },
+            "summary_action_3": { "type": "string", "description": "Action item 3" },
+            "summary_seasonal_adj": { "type": "string", "description": "Seasonal adjustments needed" }
+          }
+        }
+      }
+    }
+  }
+}

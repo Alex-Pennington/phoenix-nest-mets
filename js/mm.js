@@ -4,15 +4,26 @@ var MM_HOOKS = {
   weekly: 'https://chat.firewood.ltd/hooks/55wsqxj3iff8z8tmtazp1x9jne'
 };
 
+var SCHEMA_URL = 'https://alex-pennington.github.io/phoenix-nest-mets/schema.json';
+
+var FORM_NAMES = {
+  evaluation: 'MET Evaluation',
+  daily: 'Daily Operations Log',
+  weekly: 'Weekly Checklist'
+};
+
 App.buildMessage = function(log) {
   var payload = {
-    _schema: 'phoenix-nest-mets-v1',
-    _type: log.type,
+    _schema: SCHEMA_URL,
+    _version: '1.0.0',
+    _form: log.type,
+    _formName: FORM_NAMES[log.type] || log.type,
     _id: log.id,
     _date: log.date,
     _completed: log.completed || false,
     _completedAt: log.completedAt || null,
     _savedAt: log.savedAt || null,
+    _sentAt: new Date().toISOString(),
     data: log.data || {}
   };
   return '```json\n' + JSON.stringify(payload, null, 2) + '\n```';
