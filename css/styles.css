@@ -1015,3 +1015,308 @@ html, body {
 }
 
 .update-banner.show { display: block; }
+
+
+/* ═══════════════════════════════════
+   OPS VIEW
+   ═══════════════════════════════════ */
+
+.ops-view { padding: 16px; }
+
+.ops-hero {
+  text-align: center;
+  padding: 24px 0 16px;
+}
+.ops-hero-icon { font-size: 36px; margin-bottom: 8px; }
+.ops-hero h2 { margin: 0; font-size: 20px; font-weight: 700; color: var(--text); }
+.ops-date { margin: 4px 0 0; font-size: 13px; color: var(--text-dim); }
+
+.ops-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.ops-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ops-card:active { border-color: var(--amber); }
+.ops-card-icon { font-size: 28px; }
+.ops-card-label { font-size: 15px; font-weight: 700; color: var(--text); }
+.ops-card-sub { font-size: 11px; color: var(--text-dim); }
+
+.ops-resume-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: rgba(66, 165, 245, 0.12);
+  border: 1px solid var(--blue);
+  border-radius: 10px;
+  color: var(--blue);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+/* ═══════════════════════════════════
+   CHECKLIST FORM
+   ═══════════════════════════════════ */
+
+.cl-form { padding: 12px 16px 100px; }
+.cl-form-header { text-align: center; margin-bottom: 12px; }
+.cl-form-header h2 { margin: 0; font-size: 18px; font-weight: 700; }
+.cl-subtitle { margin: 4px 0 0; font-size: 12px; color: var(--text-dim); }
+
+.cl-phase-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.cl-phase-tab {
+  flex: 1;
+  padding: 10px;
+  background: var(--card);
+  border: none;
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.cl-phase-tab.active {
+  background: var(--amber);
+  color: var(--bg);
+}
+
+.cl-section {
+  margin-bottom: 16px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.cl-section-header {
+  padding: 10px 14px;
+  background: var(--card);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--amber);
+  border-bottom: 1px solid var(--border);
+}
+.cl-section-fields { padding: 8px 12px; }
+
+.cl-field {
+  margin-bottom: 10px;
+}
+.cl-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+.cl-input, .cl-textarea, .cl-select {
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.cl-input:focus, .cl-textarea:focus, .cl-select:focus {
+  border-color: var(--amber);
+  outline: none;
+}
+.cl-input-num { max-width: 120px; }
+.cl-input-sm {
+  margin-top: 4px;
+  font-size: 12px;
+  padding: 6px 8px;
+}
+.cl-textarea { resize: vertical; min-height: 48px; }
+
+/* Check fields */
+.cl-field-check {
+  padding: 6px 0;
+}
+.cl-check-label {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px !important;
+  color: var(--text) !important;
+  font-weight: 400 !important;
+}
+.cl-checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--green);
+  flex-shrink: 0;
+}
+.cl-check-text { flex: 1; }
+
+/* Yes/No buttons */
+.cl-field-yesno { margin-bottom: 10px; }
+.cl-yesno-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+.cl-yn-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text-dim);
+}
+.cl-yn-yes.selected {
+  background: rgba(102, 187, 106, 0.2);
+  border-color: var(--green);
+  color: var(--green);
+}
+.cl-yn-no.selected {
+  background: rgba(239, 83, 80, 0.2);
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* PPE row */
+.cl-field-ppe { margin-bottom: 10px; }
+.cl-ppe-label {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--text) !important;
+  margin-bottom: 6px !important;
+}
+.cl-ppe-items {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.cl-ppe-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+/* Form actions */
+.cl-form-actions {
+  position: fixed;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  z-index: 50;
+}
+.btn-cl-save, .btn-cl-submit {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+.btn-cl-save {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-cl-submit {
+  background: var(--amber);
+  color: var(--bg);
+}
+
+/* View mode */
+.cl-view { padding: 16px; }
+.cl-view-header { margin-bottom: 16px; }
+.cl-view-header h2 { margin: 0; font-size: 18px; }
+.cl-view-date { margin: 4px 0 0; font-size: 13px; color: var(--text-dim); }
+.cl-view-section {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: var(--card);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.cl-view-section h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--amber);
+}
+.cl-view-row {
+  font-size: 13px;
+  padding: 3px 0;
+  color: var(--text);
+}
+
+/* ═══════════════════════════════════
+   LOGS VIEW
+   ═══════════════════════════════════ */
+
+.logs-view { padding: 16px; }
+.logs-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--amber);
+  margin: 16px 0 8px;
+  padding: 0;
+}
+.logs-empty {
+  font-size: 13px;
+  color: var(--text-dim);
+  padding: 8px 0;
+}
+.log-entry {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s;
+}
+.log-entry:active { border-color: var(--amber); }
+.log-entry-date {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.log-entry-detail {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+.log-entry-weekly { border-left: 3px solid var(--blue); }

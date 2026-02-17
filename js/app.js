@@ -47,7 +47,7 @@ const App = {
 
     // Update nav highlights
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    const activeNav = document.querySelector(`.nav-btn[data-view="${view === 'task' || view === 'evaluate' || view === 'tier-tasks' ? 'guide' : view}"]`);
+    const activeNav = document.querySelector(`.nav-btn[data-view="${view === 'task' || view === 'evaluate' || view === 'tier-tasks' ? 'guide' : view === 'checklist-fill' || view === 'checklist-view' ? 'ops' : view}"]`);
     if (activeNav) activeNav.classList.add('active');
 
     // Back button visibility
@@ -85,6 +85,30 @@ const App = {
       case 'add-contractor':
         title.textContent = 'Add Contractor';
         content.innerHTML = this.renderAddContractor();
+        break;
+      case 'logs':
+        title.textContent = 'Logs';
+        this.renderLogs().then(html => { content.innerHTML = html; this.bindLogsEvents(); });
+        break;
+      case 'ops':
+        title.textContent = 'Operations';
+        content.innerHTML = this.renderOps();
+        break;
+      case 'checklist-fill':
+        title.textContent = data.checklist?.title || CHECKLISTS[data.checklistType]?.title || 'Checklist';
+        if (data.resumeId) {
+          db.getChecklist(data.resumeId).then(log => {
+            content.innerHTML = this.renderChecklistForm(data.checklistType, log ? log.data : null);
+            this.bindChecklistEvents(data.checklistType, data.resumeId);
+          });
+        } else {
+          content.innerHTML = this.renderChecklistForm(data.checklistType);
+          this.bindChecklistEvents(data.checklistType);
+        }
+        break;
+      case 'checklist-view':
+        title.textContent = 'Log Detail';
+        this.renderChecklistView(data.logId).then(html => { content.innerHTML = html; });
         break;
     }
 
@@ -545,6 +569,16 @@ const App = {
             this.navigate('tier-tasks', { tier });
           });
         });
+        break;
+
+      case 'ops':
+        document.querySelectorAll('.ops-card').forEach(card => {
+          card.addEventListener('click', () => {
+            var action = card.dataset.action;
+            this.navigate('checklist-fill', { checklistType: action });
+          });
+        });
+        this.checkOpsResume();
         break;
 
       case 'tier-tasks':

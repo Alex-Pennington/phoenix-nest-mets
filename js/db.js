@@ -2,7 +2,7 @@
 // Stores contractor profiles, evaluation records, and progress
 
 const DB_NAME = 'phoenix_nest_training';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 class TrainingDB {
   constructor() {
@@ -36,6 +36,14 @@ class TrainingDB {
           store.createIndex('taskId', 'taskId', { unique: false });
           store.createIndex('date', 'date', { unique: false });
           store.createIndex('contractor_task', ['contractorId', 'taskId'], { unique: false });
+        }
+
+        // Checklists store
+        if (!db.objectStoreNames.contains('checklists')) {
+          const store = db.createObjectStore('checklists', { keyPath: 'id', autoIncrement: true });
+          store.createIndex('type', 'type', { unique: false });
+          store.createIndex('date', 'date', { unique: false });
+          store.createIndex('type_date', ['type', 'date'], { unique: false });
         }
       };
     });
@@ -153,6 +161,26 @@ class TrainingDB {
       request.onerror = () => reject(request.error);
     });
   }
+
+  // ─── Checklists ───
+
+  async saveChecklist(checklist) {
+    return this._add('checklists', {
+      ...checklist,
+      savedAt: new Date().toISOString()
+    });
+  }
+
+  async getChecklists(type) {
+    const all = await this._getAll('checklists');
+    return all.filter(c => c.type === type).sort((a, b) => b.date > a.date ? 1 : -1);
+  }
+
+  async getChecklist(id) {
+    return this._get('checklists', id);
+  }
+
+  // ─── Helpers ───
 
   _getAll(storeName) {
     return new Promise((resolve, reject) => {
