@@ -726,23 +726,32 @@ const App = {
         mmText += `\n\n> ${evalNotes}`;
       }
 
+      let mmStatus = '';
       try {
-        await fetch('https://chat.firewood.ltd/hooks/ybhthptcy786icsz3h3ddbmieh', {
+        const resp = await fetch('https://chat.firewood.ltd/hooks/ybhthptcy786icsz3h3ddbmieh', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify({ text: mmText })
         });
+        mmStatus = '📨 Notification sent';
       } catch (e) {
-        console.warn('Mattermost notification failed:', e);
+        mmStatus = '⚠️ Notification failed: ' + e.message;
       }
 
       // Show confirmation
       const saveBtn = document.getElementById('btn-save-eval');
       saveBtn.textContent = '✅ Saved!';
       saveBtn.disabled = true;
+
+      // Flash MM status briefly
+      const resultBar = document.getElementById('eval-result-bar');
+      const oldText = resultBar.textContent;
+      resultBar.querySelector('.eval-result-label').textContent = mmStatus;
       setTimeout(() => {
+        resultBar.querySelector('.eval-result-label').textContent = oldText;
         saveBtn.textContent = 'Save Evaluation';
-      }, 2000);
+      }, 3000);
     });
   },
 
