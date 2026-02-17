@@ -717,8 +717,7 @@ const App = {
           if (results[i] === 'NO-GO') nogoItems.push(`- ❌ ${item}`);
         });
       }
-      let mmText = `${resultEmoji} **${resultText} — ${taskId}: ${task.title}**${safetyTag}\n`;
-      mmText += `| Contractor | Evaluator | Date |\n|:--|:--|:--|\n| ${contractor.name} | ${evaluator || 'N/A'} | ${evalDate} |`;
+      let mmText = `${resultEmoji} **${resultText} -- ${taskId}: ${task.title}**${safetyTag}\n\n| Contractor | Evaluator | Date |\n|:--|:--|:--|\n| ${contractor.name} | ${evaluator || 'N/A'} | ${evalDate} |`;
       if (nogoItems.length > 0) {
         mmText += `\n\n**NO-GO Items:**\n${nogoItems.join('\n')}`;
       }
@@ -730,8 +729,7 @@ const App = {
       try {
         const resp = await fetch('https://chat.firewood.ltd/hooks/ybhthptcy786icsz3h3ddbmieh', {
           method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain' },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ text: mmText })
         });
         mmStatus = '📨 Notification sent';
