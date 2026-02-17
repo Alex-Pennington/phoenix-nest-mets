@@ -1,0 +1,18 @@
+{
+  "name": "Phoenix Nest Training & Evaluation Guide",
+  "short_name": "PN Training",
+  "description": "MET-format training and evaluation guide for Phoenix Nest LLC production team",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#1a1d21",
+  "theme_color": "#1a1d21",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
