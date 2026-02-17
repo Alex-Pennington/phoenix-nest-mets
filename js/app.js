@@ -748,31 +748,35 @@ const App = {
       const nogoItems = [];
       if (!allGo) {
         task.goNoGo.forEach((item, i) => {
-          if (results[i] === 'NO-GO') nogoItems.push(`- ❌ ${item}`);
+          if (results[i] === 'NO-GO') nogoItems.push('- ❌ ' + item);
         });
       }
-      var parts = [];
-      parts.push(resultEmoji + ' **' + resultText + ' -- ' + taskId + ': ' + task.title + '**' + safetyTag);
-      parts.push('**Contractor:** ' + contractor.name + '  **Evaluator:** ' + (evaluator || 'N/A') + '  **Date:** ' + evalDate);
-      if (nogoItems.length > 0) {
-        parts.push('**NO-GO Items:**');
-        nogoItems.forEach(function(item) { parts.push(item); });
-      }
-      if (evalNotes) {
-        parts.push('> ' + evalNotes);
-      }
-      var mmText = parts.join('\n');
+
+      var logId = await db.saveChecklist({
+        type: 'evaluation',
+        date: evalDate,
+        completed: true,
+        sent: false,
+        data: {
+          taskId: taskId,
+          taskTitle: task.title,
+          contractorName: contractor.name,
+          result: resultText,
+          evaluator: evaluator,
+          date: evalDate,
+          notes: evalNotes,
+          safetyCritical: task.safetyCritical,
+          nogoItems: nogoItems,
+          details: results
+        }
+      });
 
       let mmStatus = '';
       try {
-        const resp = await fetch('https://chat.firewood.ltd/hooks/ybhthptcy786icsz3h3ddbmieh', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: mmText })
-        });
+        await App.sendLogToMM(logId, null);
         mmStatus = '📨 Notification sent';
       } catch (e) {
-        mmStatus = '⚠️ Notification failed: ' + e.message;
+        mmStatus = '⚠️ Offline - send from Logs later';
       }
 
       // Show confirmation

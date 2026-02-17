@@ -233,22 +233,28 @@ App.bindChecklistEvents = function(type, resumeId) {
   if (submitBtn) {
     submitBtn.addEventListener('click', async function() {
       var formData = App.collectFormData();
+      var logId;
       if (resumeId) {
         var existing = await db.getChecklist(resumeId);
         existing.data = formData;
         existing.completed = true;
+        existing.sent = false;
         existing.completedAt = new Date().toISOString();
         await db._put('checklists', existing);
+        logId = resumeId;
       } else {
-        await db.saveChecklist({
+        logId = await db.saveChecklist({
           type: type,
           date: formData.header_date || formData.week_info_week_start || new Date().toISOString().split('T')[0],
           completed: true,
+          sent: false,
           completedAt: new Date().toISOString(),
           data: formData
         });
       }
-      App.postChecklistToMM(type, formData);
+      try {
+        await App.sendLogToMM(logId, null);
+      } catch (e) {}
       submitBtn.textContent = 'Submitted!';
       submitBtn.disabled = true;
       setTimeout(function() { App.navigate('ops'); }, 1500);
@@ -271,60 +277,6 @@ App.collectFormData = function() {
     if (fid) data[fid] = el.dataset.val;
   });
   return data;
-};
-
-App.postChecklistToMM = async function(type, data) {
-  var parts = [];
-  if (type === 'daily') {
-    parts.push('**Daily Operations Log -- ' + (data.header_date || 'today') + '**');
-    parts.push('**Lead:** ' + (data.header_crew_lead || '?') + '  **Crew:** ' + (data.header_crew_member || '?'));
-    if (data.production_cords_split) {
-      parts.push('**Production:** ' + data.production_cords_split + ' cords / ' + (data.production_pallets_completed || '?') + ' pallets');
-    }
-    if (data.production_goal_met === 'yes') {
-      parts.push('Goal: Hit');
-    } else if (data.production_goal_met === 'no') {
-      parts.push('Goal: Missed -- ' + (data.production_goal_met_notes || ''));
-    }
-    if (data.safety_end_near_misses === 'yes') {
-      parts.push('**NEAR MISS:** ' + (data.safety_end_near_misses_notes || 'details pending'));
-    }
-    if (data.safety_end_injuries === 'yes') {
-      parts.push('**INJURY:** ' + (data.safety_end_injuries_notes || 'details pending'));
-    }
-    if (data.equip_end_equip_issues) {
-      parts.push('**Equipment Issues:** ' + data.equip_end_equip_issues);
-    }
-    if (data.tomorrow_notes_tomorrow) {
-      parts.push('> ' + data.tomorrow_notes_tomorrow);
-    }
-  } else {
-    parts.push('**Weekly Checklist -- ' + (data.week_info_week_start || '?') + ' to ' + (data.week_info_week_end || '?') + '**');
-    parts.push('**Completed by:** ' + (data.week_info_completed_by || '?'));
-    if (data.production_review_total_cords) {
-      parts.push('**Production:** ' + data.production_review_total_cords + ' cords / ' + (data.production_review_total_pallets || '?') + ' pallets / ' + (data.production_review_days_worked || '?') + ' days');
-    }
-    if (data.quality_weekly_mc_avg) {
-      parts.push('**MC Average:** ' + data.quality_weekly_mc_avg + '%');
-    }
-    if (data.inventory_raw_supply) {
-      parts.push('**Raw Supply:** ' + data.inventory_raw_supply);
-    }
-    if (data.summary_wins) {
-      parts.push('**Wins:** ' + data.summary_wins);
-    }
-    if (data.summary_challenges) {
-      parts.push('**Challenges:** ' + data.summary_challenges);
-    }
-  }
-  var mmText = parts.join('\n');
-  try {
-    await fetch('https://chat.firewood.ltd/hooks/55wsqxj3iff8z8tmtazp1x9jne', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: mmText })
-    });
-  } catch (e) {}
 };
 
 App.renderChecklistView = async function(logId) {

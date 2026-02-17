@@ -1,7 +1,7 @@
 // Phoenix Nest Training App - Service Worker
 // Cache-first strategy for full offline support
 
-const CACHE_NAME = 'pn-training-v13';
+const CACHE_NAME = 'pn-training-v14';
 const ASSETS = [
   './',
   './index.html',
@@ -11,6 +11,7 @@ const ASSETS = [
   './js/checklists.js',
   './js/db.js',
   './js/app.js',
+  './js/mm.js',
   './js/ops.js',
   './js/logs.js',
   './icons/icon.svg',
