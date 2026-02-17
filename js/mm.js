@@ -4,78 +4,18 @@ var MM_HOOKS = {
   weekly: 'https://chat.firewood.ltd/hooks/55wsqxj3iff8z8tmtazp1x9jne'
 };
 
-App.buildEvalMessage = function(log) {
-  var d = log.data || {};
-  var resultEmoji = d.result === 'GO' ? '✅' : '❌';
-  var parts = [];
-  parts.push(resultEmoji + ' ' + d.result + ' -- ' + d.taskId + ': ' + d.taskTitle + (d.safetyCritical ? ' [SAFETY-CRITICAL]' : ''));
-  parts.push('Contractor: ' + d.contractorName + '  |  Evaluator: ' + (d.evaluator || 'N/A') + '  |  Date: ' + d.date);
-  if (d.nogoItems && d.nogoItems.length > 0) {
-    parts.push('NO-GO Items:');
-    d.nogoItems.forEach(function(item) { parts.push(item); });
-  }
-  if (d.notes) {
-    parts.push('Notes: ' + d.notes);
-  }
-  return parts.join('\n');
-};
-
-App.buildDailyMessage = function(log) {
-  var d = log.data || {};
-  var parts = [];
-  parts.push('📋 Daily Operations Log -- ' + (d.header_date || log.date || 'today'));
-  parts.push('Lead: ' + (d.header_crew_lead || '?') + '  |  Crew: ' + (d.header_crew_member || '?'));
-  if (d.production_cords_split) {
-    parts.push('Production: ' + d.production_cords_split + ' cords / ' + (d.production_pallets_completed || '?') + ' pallets');
-  }
-  if (d.production_goal_met === 'yes') {
-    parts.push('Goal: Hit ✅');
-  } else if (d.production_goal_met === 'no') {
-    parts.push('Goal: Missed ❌ -- ' + (d.production_goal_met_notes || ''));
-  }
-  if (d.safety_end_near_misses === 'yes') {
-    parts.push('⚠️ NEAR MISS: ' + (d.safety_end_near_misses_notes || 'details pending'));
-  }
-  if (d.safety_end_injuries === 'yes') {
-    parts.push('🚨 INJURY: ' + (d.safety_end_injuries_notes || 'details pending'));
-  }
-  if (d.equip_end_equip_issues) {
-    parts.push('🔧 Equipment Issues: ' + d.equip_end_equip_issues);
-  }
-  if (d.tomorrow_notes_tomorrow) {
-    parts.push('Tomorrow: ' + d.tomorrow_notes_tomorrow);
-  }
-  return parts.join('\n');
-};
-
-App.buildWeeklyMessage = function(log) {
-  var d = log.data || {};
-  var parts = [];
-  parts.push('📊 Weekly Checklist -- ' + (d.week_info_week_start || '?') + ' to ' + (d.week_info_week_end || '?'));
-  parts.push('Completed by: ' + (d.week_info_completed_by || '?'));
-  if (d.production_review_total_cords) {
-    parts.push('Production: ' + d.production_review_total_cords + ' cords / ' + (d.production_review_total_pallets || '?') + ' pallets / ' + (d.production_review_days_worked || '?') + ' days');
-  }
-  if (d.quality_weekly_mc_avg) {
-    parts.push('MC Average: ' + d.quality_weekly_mc_avg + '%');
-  }
-  if (d.inventory_raw_supply) {
-    parts.push('Raw Supply: ' + d.inventory_raw_supply);
-  }
-  if (d.summary_wins) {
-    parts.push('Wins: ' + d.summary_wins);
-  }
-  if (d.summary_challenges) {
-    parts.push('Challenges: ' + d.summary_challenges);
-  }
-  return parts.join('\n');
-};
-
 App.buildMessage = function(log) {
-  if (log.type === 'evaluation') return App.buildEvalMessage(log);
-  if (log.type === 'daily') return App.buildDailyMessage(log);
-  if (log.type === 'weekly') return App.buildWeeklyMessage(log);
-  return '';
+  var payload = {
+    _schema: 'phoenix-nest-mets-v1',
+    _type: log.type,
+    _id: log.id,
+    _date: log.date,
+    _completed: log.completed || false,
+    _completedAt: log.completedAt || null,
+    _savedAt: log.savedAt || null,
+    data: log.data || {}
+  };
+  return '```json\n' + JSON.stringify(payload, null, 2) + '\n```';
 };
 
 App.sendLogToMM = async function(logId, btn) {
