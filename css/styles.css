@@ -1001,3 +1001,17 @@ html, body {
 }
 
 .install-banner.show { display: block; }
+
+.update-banner {
+  display: none;
+  padding: 12px 16px;
+  background: rgba(66, 165, 245, 0.15);
+  border-bottom: 1px solid var(--blue);
+  text-align: center;
+  font-size: 13px;
+  color: var(--blue);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.update-banner.show { display: block; }
