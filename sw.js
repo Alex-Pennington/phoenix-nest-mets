@@ -1,7 +1,7 @@
 // Phoenix Nest Training App - Service Worker
 // Cache-first strategy for full offline support
 
-const CACHE_NAME = 'pn-training-v24';
+const CACHE_NAME = 'pn-training-v25';
 const ASSETS = [
   './',
   './index.html',
@@ -42,6 +42,13 @@ self.addEventListener('activate', (event) => {
     })
   );
   self.clients.claim();
+});
+
+// Listen for skip waiting message from page
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 // Fetch: cache-first, then network
