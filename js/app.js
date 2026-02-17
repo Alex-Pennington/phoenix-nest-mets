@@ -8,7 +8,53 @@ const App = {
   async init() {
     await db.init();
     this.bindNavigation();
-    this.navigate('home');
+    var route = this.parseHash();
+    if (route) {
+      this.navigate(route.view, route.data);
+    } else {
+      this.navigate('home');
+    }
+    window.addEventListener('hashchange', () => {
+      var r = this.parseHash();
+      if (r && (r.view !== this.currentView || JSON.stringify(r.data) !== JSON.stringify(this._currentData || {}))) {
+        this.viewStack = [];
+        this.renderView(r.view, r.data);
+      }
+    });
+  },
+
+  parseHash() {
+    var h = location.hash.replace('#', '');
+    if (!h) return null;
+    var parts = h.split('/');
+    var view = parts[0];
+    var param = parts.slice(1).join('/');
+    switch (view) {
+      case 'home': return { view: 'home', data: {} };
+      case 'guide': return param ? { view: 'tier-tasks', data: { tierId: param } } : { view: 'guide', data: {} };
+      case 'task': return param ? { view: 'task', data: { taskId: param } } : { view: 'guide', data: {} };
+      case 'evaluate': return param ? { view: 'evaluate', data: { taskId: param } } : { view: 'guide', data: {} };
+      case 'ops': return { view: 'ops', data: {} };
+      case 'team': return { view: 'team', data: {} };
+      case 'logs': return { view: 'logs', data: {} };
+      default: return { view: 'home', data: {} };
+    }
+  },
+
+  viewToHash(view, data) {
+    switch (view) {
+      case 'home': return '#home';
+      case 'guide': return '#guide';
+      case 'tier-tasks': return '#guide/' + (data.tierId || '');
+      case 'task': return '#task/' + (data.taskId || '');
+      case 'evaluate': return '#evaluate/' + (data.taskId || '');
+      case 'ops': return '#ops';
+      case 'checklist-fill': return '#ops';
+      case 'checklist-view': return '#logs';
+      case 'team': return '#team';
+      case 'logs': return '#logs';
+      default: return '#home';
+    }
   },
 
   bindNavigation() {
@@ -34,6 +80,10 @@ const App = {
       if (this.currentView !== 'home' || view !== 'home') {
         this.viewStack.push({ view: this.currentView, data: this._currentData || {} });
       }
+    }
+    var newHash = this.viewToHash(view, data);
+    if (location.hash !== newHash) {
+      history.replaceState(null, '', newHash);
     }
     this.renderView(view, data);
   },
@@ -127,7 +177,7 @@ const App = {
         <div class="hero-icon">🔥</div>
         <h1 class="hero-title">PHOENIX NEST</h1>
         <p class="hero-sub">Training & Evaluation Guide</p>
-        <p class="hero-meta">MET Format • 38 Task Cards • 4 Tier Levels • v23</p>
+        <p class="hero-meta">MET Format • 38 Task Cards • 4 Tier Levels • v24</p>
       </div>
 
       <div class="home-grid">
