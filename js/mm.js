@@ -4,7 +4,7 @@ var MM_HOOKS = {
   weekly: 'https://chat.firewood.ltd/hooks/55wsqxj3iff8z8tmtazp1x9jne'
 };
 
-var SCHEMA_URL = 'https://alex-pennington.github.io/phoenix-nest-mets/schema.json';
+var SCHEMA_URL = 'https://mets.firewood.ltd/schema.json';
 
 var FORM_NAMES = {
   evaluation: 'MET Evaluation',

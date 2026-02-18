@@ -177,7 +177,7 @@ const App = {
         <div class="hero-icon">🔥</div>
         <h1 class="hero-title">PHOENIX NEST</h1>
         <p class="hero-sub">Training & Evaluation Guide</p>
-        <p class="hero-meta">MET Format • 38 Task Cards • 4 Tier Levels • v25</p>
+        <p class="hero-meta">MET Format • 38 Task Cards • 4 Tier Levels • v26</p>
       </div>
 
       <div class="home-grid">
