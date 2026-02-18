@@ -1,7 +1,7 @@
 {
   "schema": "phoenix-nest-mets",
   "version": "1.0.0",
-  "url": "https://mets.firewood.ltd/schema.json",
+  "url": "https://alex-pennington.github.io/phoenix-nest-mets/schema.json",
   "organization": "Phoenix Nest LLC",
   "description": "Schema for all forms in the Phoenix Nest METS (Training, Evaluation & Operations) PWA",
   "forms": {
