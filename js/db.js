@@ -2,7 +2,7 @@
 // Stores contractor profiles, evaluation records, and progress
 
 const DB_NAME = 'phoenix_nest_training';
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 
 class TrainingDB {
   constructor() {
@@ -44,6 +44,11 @@ class TrainingDB {
           store.createIndex('type', 'type', { unique: false });
           store.createIndex('date', 'date', { unique: false });
           store.createIndex('type_date', ['type', 'date'], { unique: false });
+        }
+
+        // Outbox store (Background Sync queue)
+        if (!db.objectStoreNames.contains('outbox')) {
+          db.createObjectStore('outbox', { keyPath: 'id', autoIncrement: true });
         }
       };
     });
@@ -140,6 +145,66 @@ class TrainingDB {
     }
 
     return progress;
+  }
+
+  // ─── Outbox (Background Sync queue) ───
+
+  async queueSend(payload) {
+    return this._add('outbox', {
+      payload: payload,
+      queuedAt: new Date().toISOString()
+    });
+  }
+
+  async getOutbox() {
+    return this._getAll('outbox');
+  }
+
+  async removeFromOutbox(id) {
+    return this._delete('outbox', id);
+  }
+
+  // ─── Employee Sync from API ───
+
+  async syncEmployees() {
+    try {
+      var apiBase = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+        ? 'http://localhost:5100' : '';
+      var resp = await fetch(apiBase + '/api/employees');
+      if (!resp.ok) return false;
+      var remote = await resp.json();
+      if (!Array.isArray(remote) || remote.length === 0) return false;
+
+      var local = await this.getAllContractors();
+      var localByOdoo = {};
+      local.forEach(c => { if (c.odooId) localByOdoo[c.odooId] = c; });
+
+      for (var emp of remote) {
+        var existing = localByOdoo[emp.odooId];
+        if (existing) {
+          if (existing.name !== emp.name || existing.role !== emp.role) {
+            existing.name = emp.name;
+            existing.role = emp.role;
+            existing.phone = emp.phone;
+            existing.email = emp.email;
+            await this._put('contractors', existing);
+          }
+        } else {
+          await this.addContractor({
+            odooId: emp.odooId,
+            name: emp.name,
+            role: emp.role,
+            phone: emp.phone,
+            email: emp.email,
+            currentTier: 1
+          });
+        }
+      }
+      return true;
+    } catch (e) {
+      console.log('Employee sync failed (offline?)', e);
+      return false;
+    }
   }
 
   // ─── Generic CRUD ───

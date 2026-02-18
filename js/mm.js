@@ -1,10 +1,14 @@
-var MM_HOOKS = {
-  evaluation: 'https://chat.firewood.ltd/hooks/ybhthptcy786icsz3h3ddbmieh',
-  daily: 'https://chat.firewood.ltd/hooks/55wsqxj3iff8z8tmtazp1x9jne',
-  weekly: 'https://chat.firewood.ltd/hooks/55wsqxj3iff8z8tmtazp1x9jne'
-};
+// Phoenix Nest METS - Mattermost Send via Backend API
+// Posts to /api/send which relays to MM server-side (no CORS issues)
 
-var SCHEMA_URL = 'https://alex-pennington.github.io/phoenix-nest-mets/schema.json';
+var METS_API = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+  ? 'http://localhost:5100'
+  : '/api';
+
+var API_SEND = METS_API + (METS_API.endsWith('/api') ? '/send' : '/api/send');
+var API_QUEUE = METS_API + (METS_API.endsWith('/api') ? '/queue' : '/api/queue');
+
+var SCHEMA_URL = 'https://mets.firewood.ltd/schema.json';
 
 var FORM_NAMES = {
   evaluation: 'MET Evaluation',
@@ -12,8 +16,8 @@ var FORM_NAMES = {
   weekly: 'Weekly Checklist'
 };
 
-App.buildMessage = function(log) {
-  var payload = {
+App.buildPayload = function(log) {
+  return {
     _schema: SCHEMA_URL,
     _version: '1.0.0',
     _form: log.type,
@@ -26,27 +30,40 @@ App.buildMessage = function(log) {
     _sentAt: new Date().toISOString(),
     data: log.data || {}
   };
-  return '```json\n' + JSON.stringify(payload, null, 2) + '\n```';
 };
 
 App.sendLogToMM = async function(logId, btn) {
   var log = await db.getChecklist(logId);
   if (!log) return;
-  var hookUrl = MM_HOOKS[log.type] || MM_HOOKS.daily;
-  var mmText = App.buildMessage(log);
-  if (!mmText) return;
+
+  var payload = App.buildPayload(log);
   if (btn) { btn.textContent = 'Sending...'; btn.disabled = true; }
+
   try {
-    await fetch(hookUrl, {
+    var resp = await fetch(API_SEND, {
       method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify({ text: mmText })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
-    log.sent = true;
-    log.sentAt = new Date().toISOString();
-    await db._put('checklists', log);
-    if (btn) { btn.textContent = 'Sent ✓'; btn.classList.add('log-sent-done'); }
+
+    if (resp.ok) {
+      var result = await resp.json();
+      log.sent = true;
+      log.sentAt = result.sentAt || new Date().toISOString();
+      await db._put('checklists', log);
+      if (btn) { btn.textContent = 'Sent ✓'; btn.classList.add('log-sent-done'); }
+    } else {
+      throw new Error('Server returned ' + resp.status);
+    }
   } catch (e) {
-    if (btn) { btn.textContent = 'Failed - Retry'; btn.disabled = false; }
+    // Queue for Background Sync if available
+    if ('serviceWorker' in navigator && 'SyncManager' in window) {
+      await db.queueSend(payload);
+      if (btn) { btn.textContent = 'Queued ⏳'; btn.disabled = true; }
+      var reg = await navigator.serviceWorker.ready;
+      await reg.sync.register('send-logs');
+    } else {
+      if (btn) { btn.textContent = 'Failed - Retry'; btn.disabled = false; }
+    }
   }
 };

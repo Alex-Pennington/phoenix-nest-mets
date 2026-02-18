@@ -1,7 +1,7 @@
 // Phoenix Nest Training App - Service Worker
 // Cache-first strategy for full offline support
 
-const CACHE_NAME = 'pn-training-v27';
+const CACHE_NAME = 'pn-training-v28';
 const ASSETS = [
   './',
   './index.html',
@@ -51,10 +51,16 @@ self.addEventListener('message', (event) => {
   }
 });
 
-// Fetch: cache-first, then network
+// Fetch: cache-first for static, network-first for API
 self.addEventListener('fetch', (event) => {
-  // Skip non-GET requests
+  // Skip non-GET requests (POST to /api/send etc)
   if (event.request.method !== 'GET') return;
+
+  // Never cache API calls
+  if (event.request.url.includes('/api/')) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cached) => {
@@ -78,3 +84,60 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
+// ─── Background Sync: retry queued Mattermost sends ───
+
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'send-logs') {
+    event.waitUntil(flushOutbox());
+  }
+});
+
+async function flushOutbox() {
+  // Open IndexedDB directly from SW context
+  var db = await openDB();
+  var tx = db.transaction('outbox', 'readonly');
+  var store = tx.objectStore('outbox');
+  var items = await idbGetAll(store);
+
+  if (items.length === 0) return;
+
+  var apiBase = self.location.origin;
+  var resp = await fetch(apiBase + '/api/queue', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(items.map(i => i.payload))
+  });
+
+  if (resp.ok) {
+    var results = await resp.json();
+    // Remove successfully sent items from outbox
+    var tx2 = db.transaction('outbox', 'readwrite');
+    var store2 = tx2.objectStore('outbox');
+    for (var i = 0; i < results.length; i++) {
+      if (results[i].ok) {
+        store2.delete(items[i].id);
+      }
+    }
+
+    // Notify the page that queued items were sent
+    var clients = await self.clients.matchAll();
+    clients.forEach(c => c.postMessage({ type: 'SYNC_COMPLETE', results: results }));
+  }
+}
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    var req = indexedDB.open('phoenix_nest_training', 3);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function idbGetAll(store) {
+  return new Promise((resolve, reject) => {
+    var req = store.getAll();
+    req.onsuccess = () => resolve(req.result || []);
+    req.onerror = () => reject(req.error);
+  });
+}

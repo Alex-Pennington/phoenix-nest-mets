@@ -8,6 +8,18 @@ const App = {
   async init() {
     await db.init();
     this.bindNavigation();
+    // Sync employees from Odoo in background (non-blocking)
+    db.syncEmployees().then(ok => {
+      if (ok) console.log('Employees synced from Odoo');
+    });
+    // Listen for Background Sync completions
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'SYNC_COMPLETE') {
+          console.log('Background sync sent', event.data.results.length, 'logs');
+        }
+      });
+    }
     var route = this.parseHash();
     if (route) {
       this.navigate(route.view, route.data);
@@ -177,7 +189,7 @@ const App = {
         <div class="hero-icon">🔥</div>
         <h1 class="hero-title">PHOENIX NEST</h1>
         <p class="hero-sub">Training & Evaluation Guide</p>
-        <p class="hero-meta">MET Format • 38 Task Cards • 4 Tier Levels • v27</p>
+        <p class="hero-meta">MET Format • 38 Task Cards • 4 Tier Levels • v28</p>
       </div>
 
       <div class="home-grid">
