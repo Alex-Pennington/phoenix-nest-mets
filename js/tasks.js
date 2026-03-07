@@ -14,6 +14,11 @@ const TIERS = [
         tasks: ['PN-001', 'PN-002', 'PN-003']
       },
       {
+        name: 'Community & Participation',
+        icon: '🤝',
+        tasks: ['PN-010', 'PN-011']
+      },
+      {
         name: 'Digital Tools',
         icon: '📱',
         tasks: ['PN-004', 'PN-005', 'PN-006', 'PN-009']
@@ -697,6 +702,214 @@ const TASKS = {
     ],
     safetyCritical: false,
     references: 'Greybeard Payroll App - Kiosk Module Documentation'
+  },
+
+  'PN-010': {
+    id: 'PN-010',
+    tier: 'onboarding',
+    title: 'The Two Spaces — Company & Community',
+    conditions: [
+      'Contractor has completed PN-001 (Company Overview).',
+      'Owner is available for a direct, unhurried conversation.',
+      'This should be done one-on-one, not in a group setting.'
+    ],
+    standards: [
+      'Community member can explain the difference between the Company and the Community in their own words.',
+      'Community member understands the boundary between commerce and mutual aid.',
+      'Community member understands what the government can and cannot require.'
+    ],
+    perfSteps: [
+      {
+        text: 'Phoenix Nest operates in two spaces. Both are real. Both matter. Understanding the difference is the most important thing you can learn here.',
+        substeps: []
+      },
+      {
+        text: 'The Company:',
+        substeps: [
+          'Phoenix Nest LLC is a business registered with the Commonwealth of Kentucky.',
+          'It produces and delivers firewood. It generates revenue. It pays taxes.',
+          'Everything that flows through the Company — every dollar in, every dollar out — is tracked and reported.',
+          'When the Company pays someone for work, that payment is documented and reported to the IRS.',
+          'This is not optional. This is the cost of operating a legal business, and Phoenix Nest pays it completely.'
+        ]
+      },
+      {
+        text: 'The Community:',
+        substeps: [
+          'The Community is the people. It is you, the crew, families, neighbors, and anyone who shows up because they choose to be part of this.',
+          'The Community is not a legal entity. It is not registered anywhere. It has no EIN.',
+          'It exists because people choose to be in relationship with each other.',
+          'People helping each other, sharing resources, and taking care of their own is not commerce. It is life.',
+          'The government does not regulate it because the government has no authority over people choosing to be good to each other.'
+        ]
+      },
+      {
+        text: 'The Boundary:',
+        substeps: [
+          'These two spaces coexist. Sometimes the same people move through both spaces in the same day.',
+          'You might do paid work for the Company in the morning and help a neighbor in the afternoon.',
+          'Those are different things happening in different spaces, even if they involve the same people and the same piece of ground.',
+          'Resources that flow through the Company are documented, taxed, and reported as required by law.',
+          'Acts of generosity, mutual aid, and voluntary cooperation between community members in their personal capacities are not Company transactions.'
+        ]
+      },
+      {
+        text: 'What the government can require:',
+        substeps: [
+          'Tax reporting on income.',
+          'Documentation (SSN or ITIN) for any formal employment or contractor relationship.',
+          'Compliance with labor laws for workers classified as employees.',
+          'These requirements apply to the Company and to any formal economic relationship between the Company and an individual.'
+        ]
+      },
+      {
+        text: 'What the government cannot require:',
+        substeps: [
+          'Documentation for friendship.',
+          'Reporting on acts of generosity.',
+          'Oversight of mutual aid between neighbors.',
+          'A Social Security number to belong to a community, share a meal, help a friend, or receive help when you need it.',
+          'The government\'s authority ends where commerce ends. Beyond that line is human life, and human life is sovereign.'
+        ]
+      },
+      {
+        text: 'Why this matters:',
+        substeps: [
+          'Phoenix Nest satisfies the government\'s legitimate requirements completely and cleanly.',
+          'And it builds the real life of this community in the space where the government has no legitimate authority.',
+          'We render unto Caesar what is Caesar\'s. And we keep what is ours.'
+        ]
+      }
+    ],
+    goNoGo: [
+      'Can explain the difference between the Company and the Community in their own words',
+      'Understands that Company transactions (pay for work) require documentation and tax reporting',
+      'Understands that community relationships (mutual aid, generosity, voluntary help) do not require documentation',
+      'Can describe the boundary — where commerce ends and human life begins',
+      'Understands that Phoenix Nest complies fully with all legal requirements on the Company side',
+      'Does not confuse the Community space with a way to avoid the Company\'s legal obligations'
+    ],
+    notes: [
+      'This is a conversation, not a lecture. Let the person ask questions. Let them push back.',
+      'Some people will have complicated reasons for caring deeply about this distinction. Respect that without requiring an explanation.',
+      'If someone does not understand or agree with the boundary principle, that is fine. They can participate fully in the Company space without engaging the Community space at all.',
+      'This task should be evaluated through genuine conversation, not a checklist recitation.'
+    ],
+    safetyCritical: false,
+    references: 'Phoenix Nest LLC Operating Agreement, Article III; Walking Between Two Spaces Community Guide'
+  },
+
+  'PN-011': {
+    id: 'PN-011',
+    tier: 'onboarding',
+    title: 'Participation Options & Community Expectations',
+    conditions: [
+      'Community member has completed PN-010 (The Two Spaces).',
+      'Owner is available for continued one-on-one conversation.',
+      'Community member has had time to process PN-010 before this conversation.'
+    ],
+    standards: [
+      'Community member understands the options available to them for participation.',
+      'Community member understands the Community Equipment Pool and how stewardship works.',
+      'Community member understands what is expected of them — honesty, integrity, reciprocity, respect, and growth.'
+    ],
+    perfSteps: [
+      {
+        text: 'There are four ways to participate in Phoenix Nest. They are not ranked. The right one depends on your situation.',
+        substeps: []
+      },
+      {
+        text: 'Option 1 — Full Participation in Both Spaces:',
+        substeps: [
+          'You provide the required documentation (SSN or ITIN).',
+          'You work for Phoenix Nest as a contractor or employee.',
+          'You get paid through the formal system. Your income is reported. You pay taxes on it.',
+          'And you are also a member of the Community, with all the relationship and reciprocity that entails.',
+          'This is the simplest path. If you can do this, it is the easiest road for everyone.'
+        ]
+      },
+      {
+        text: 'Option 2 — Community Only:',
+        substeps: [
+          'You do not provide documentation. You do not work for the Company.',
+          'You are not on any payroll or contractor list.',
+          'You are a member of the Community. You show up when you want to. You help when you want to. You receive help when you need it.',
+          'None of this flows through the Company\'s books because none of it is a Company transaction.',
+          'This path requires genuine honesty. If your participation starts to look like regular work for the Company, the honest thing is to have a conversation about adjusting.'
+        ]
+      },
+      {
+        text: 'Option 3 — Transition Path:',
+        substeps: [
+          'You start in the Community space while you work through whatever makes the documentation side complicated right now.',
+          'Maybe you need to resolve an identity issue. Maybe you need to get an ITIN. Maybe you need time.',
+          'You participate in the Community on community terms while you work toward a position where full participation becomes possible.',
+          'Phoenix Nest will not pressure you on a timeline.',
+          'But the transition path is a bridge, not a destination. The goal is to get you to a place where you can stand fully in both spaces.'
+        ]
+      },
+      {
+        text: 'Option 4 — Independent Operator:',
+        substeps: [
+          'You use the community\'s resources, knowledge, and support to build your own independent operation.',
+          'The Community Equipment Pool exists partly for this purpose — tools held in stewardship to help you develop your own capacity.',
+          'The goal is graduation: you learn, you grow, you build your own thing.',
+          'At some point you are not working for Phoenix Nest at all. You are working for yourself.',
+          'The community is the network of mutual support between independent people.'
+        ]
+      },
+      {
+        text: 'The Community Equipment Pool:',
+        substeps: [
+          'Phoenix Nest maintains a pool of tools, safety gear, and equipment held in stewardship for the community.',
+          'Chainsaws, chaps, helmets, splitting tools — whatever is needed.',
+          'If you are a community member, you may be given custody of equipment from the Pool. You use it, you take care of it.',
+          'Custody does not transfer ownership. The Company holds title so it can insure and maintain the equipment.',
+          'If you reach genuine independence, equipment can be permanently transferred to you. That is the whole point of the Pool — to build people up, not keep them dependent.',
+          'If you have equipment to contribute, Phoenix Nest can receive it into the Pool for the community\'s use.'
+        ]
+      },
+      {
+        text: 'The Honest Line:',
+        substeps: [
+          'The difference between community and employment is not a technicality. It is about what it actually is.',
+          'Only the people involved know what it actually is.',
+          'Can you honestly say: I am here because I choose to be, not because I was hired?',
+          'Can you honestly say: What I receive is given freely, not earned through an unspoken arrangement?',
+          'If yes — genuinely, honestly yes — you are in the community space and you are fine.',
+          'If the answer is complicated, it needs to be talked about. Directly. Between you and Alex.',
+          'The only way this works is if the people in it are honest with each other about what they are actually doing.'
+        ]
+      },
+      {
+        text: 'What is expected of you:',
+        substeps: [
+          'Honesty — Be honest about what you are doing, why you are here, and what your situation is. Do not lie to the people trying to help you.',
+          'Integrity at the boundary — Understand the difference between the Company space and the Community space. Do not blur them. If you do, you put everyone at risk.',
+          'Reciprocity — If you receive, give. If you are helped, help. Not on a schedule. Not by a formula. In the natural way communities sustain themselves.',
+          'Respect — For each other, for the work, for the land, for the equipment, for the complexity of what we are all navigating.',
+          'Growth — The goal is not dependency. The goal is to build people up. If you are here, you are here to grow in skill, capacity, and independence.'
+        ]
+      }
+    ],
+    goNoGo: [
+      'Can describe at least two of the four participation options in their own words',
+      'Has identified which option fits their current situation',
+      'Understands how the Community Equipment Pool works — custody vs ownership vs graduation',
+      'Can articulate the honest line — the difference between genuine community participation and disguised employment',
+      'Understands the five expectations: honesty, integrity at the boundary, reciprocity, respect, growth',
+      'Has had the opportunity to ask questions and express concerns without pressure'
+    ],
+    notes: [
+      'Do not rush this conversation. This is where trust is built or lost.',
+      'The person does not need to declare their option on the spot. They may need time to think.',
+      'If someone chooses Option 2 or Option 3, do not treat them as less-than. They are community members. Period.',
+      'This conversation should feel like sitting around a fire, not like an HR onboarding session.',
+      'If the person has reasons for avoiding documentation, those reasons are respected. Do not press for details they do not offer.',
+      'Revisit this conversation periodically. Situations change. Options that were not available before may open up.'
+    ],
+    safetyCritical: false,
+    references: 'Phoenix Nest LLC Operating Agreement, Articles III, V, VI; Walking Between Two Spaces Community Guide'
   },
 
   'PN-101': {
